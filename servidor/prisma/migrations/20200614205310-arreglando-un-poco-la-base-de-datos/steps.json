@@ -1,0 +1,661 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateModel",
+      "model": "InsumoProducto"
+    },
+    {
+      "tag": "CreateField",
+      "model": "InsumoProducto",
+      "field": "producto",
+      "type": "Producto",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "InsumoProducto",
+          "field": "producto"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "InsumoProducto",
+          "field": "producto"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[productoId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "InsumoProducto",
+          "field": "producto"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "InsumoProducto",
+      "field": "productoId",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "InsumoProducto",
+      "field": "insumo",
+      "type": "Insumo",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "InsumoProducto",
+          "field": "insumo"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "InsumoProducto",
+          "field": "insumo"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[insumoId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "InsumoProducto",
+          "field": "insumo"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "InsumoProducto",
+      "field": "insumoId",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "InsumoProducto",
+      "field": "cantidad",
+      "type": "Float",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "InsumoProducto",
+      "field": "unidad",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "InsumoProducto"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "InsumoProducto"
+        },
+        "directive": "id"
+      },
+      "argument": "",
+      "value": "[productoId, insumoId]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Cargo",
+      "field": "estado",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Cargo",
+          "field": "estado"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Cargo",
+          "field": "estado"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "true"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Personal",
+      "field": "sueldo",
+      "type": "Float",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Personal",
+      "field": "estado",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Personal",
+          "field": "estado"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Personal",
+          "field": "estado"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "true"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Personal",
+      "field": "pedidosAtendidos",
+      "type": "Pedido",
+      "arity": "List"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Personal",
+      "field": "Pedido"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Credencial",
+      "field": "estado",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Credencial",
+          "field": "estado"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Credencial",
+          "field": "estado"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "true"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Insumo",
+      "field": "cantidad",
+      "type": "Float",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Insumo",
+      "field": "unidad",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Insumo",
+      "field": "estado",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Insumo",
+          "field": "estado"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Insumo",
+          "field": "estado"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "true"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Insumo",
+      "field": "comprasRealizadas",
+      "type": "DetalleCompra",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Insumo",
+      "field": "productos",
+      "type": "InsumoProducto",
+      "arity": "List"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Insumo",
+      "field": "compras"
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Compra",
+          "field": "fecha"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Compra",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[serie, numero]"
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "DetalleCompra",
+      "field": "unidad",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Producto",
+      "field": "descripcion",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Producto",
+      "field": "cantidad",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Producto",
+      "field": "pedidosRealizados",
+      "type": "DetallePedido",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Producto",
+      "field": "receta",
+      "type": "InsumoProducto",
+      "arity": "List"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Producto",
+      "field": "pedidos"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Producto",
+          "field": "estado"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Producto",
+          "field": "estado"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "true"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Mesa",
+      "field": "estado",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Mesa",
+          "field": "estado"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Mesa",
+          "field": "estado"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "true"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Mesa",
+      "field": "pedidosRealizados",
+      "type": "Pedido",
+      "arity": "List"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Mesa",
+      "field": "Pedido"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Mesa",
+          "field": "ocupado"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Mesa",
+          "field": "ocupado"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "tag": "CreateField",
+      "model": "TipoPago",
+      "field": "pagosPorTipo",
+      "type": "Pago",
+      "arity": "List"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "TipoPago",
+      "field": "pagos"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Pago",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[serie, numero]"
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Pedido",
+      "field": "Reclamo"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Pedido",
+      "field": "pago",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Reclamo",
+      "field": "detallePedido",
+      "type": "DetallePedido",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Reclamo",
+          "field": "detallePedido"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Reclamo",
+          "field": "detallePedido"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[pedidoId, productoId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Reclamo",
+          "field": "detallePedido"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[pedidoId, productoId]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Reclamo",
+      "field": "productoId",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Reclamo",
+      "field": "pedido"
+    },
+    {
+      "tag": "CreateField",
+      "model": "DetallePedido",
+      "field": "entregado",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "DetallePedido",
+          "field": "entregado"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "DetallePedido",
+          "field": "entregado"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "tag": "CreateField",
+      "model": "DetallePedido",
+      "field": "estado",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "DetallePedido",
+          "field": "estado"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "DetallePedido",
+          "field": "estado"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "true"
+    },
+    {
+      "tag": "CreateField",
+      "model": "DetallePedido",
+      "field": "reclamos",
+      "type": "Reclamo",
+      "arity": "List"
+    }
+  ]
+}

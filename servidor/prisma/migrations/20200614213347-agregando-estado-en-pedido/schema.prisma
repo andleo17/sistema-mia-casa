@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model Cargo {
@@ -16,19 +16,19 @@ model Personal {
   apellidos        String
   cargo            Cargo       @relation(fields: [cargoId], references: [id])
   cargoId          Int
+  credencial       Credencial? @relation(fields: [credencialId], references: [id])
+  credencialId     Int?
   sueldo           Float
   estado           Boolean     @default(true)
   pedidosAtendidos Pedido[]
-  credencial       Credencial?
 }
 
 model Credencial {
-  id         Int      @default(autoincrement()) @id
-  usuario    String   @unique
-  clave      String
-  estado     Boolean  @default(true)
-  personal   Personal @relation(fields: [personalId], references: [id])
-  personalId Int
+  id       Int      @default(autoincrement()) @id
+  usuario  String   @unique
+  clave    String
+  estado   Boolean  @default(true)
+  personal Personal
 }
 
 model Insumo {

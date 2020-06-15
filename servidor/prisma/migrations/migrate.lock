@@ -1,3 +1,6 @@
 # Prisma Migrate lockfile v1
 
 20200614185430-migracion-inicial
+20200614205310-arreglando-un-poco-la-base-de-datos
+20200614213347-agregando-estado-en-pedido
+20200614220949-cambiando-la-clave-foranea-entre-personal-y-credencial
