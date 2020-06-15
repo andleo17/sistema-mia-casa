@@ -1,0 +1,180 @@
+type Cargo {
+	id: ID!
+	nombre: String!
+	estado: Boolean!
+	personal: [Personal!]!
+}
+
+type Personal {
+	id: ID!
+	nombres: String!
+	apellidos: String!
+	sueldo: Float!
+	estado: Boolean!
+	cargo: Cargo!
+	credencial: Credencial
+	pedidosAtendidos: [Pedido!]!
+}
+
+type Credencial {
+	id: ID!
+	usuario: String!
+	clave: String!
+	estado: Boolean!
+	personal: Personal!
+}
+
+type Insumo {
+	id: ID!
+	nombre: String!
+	fechaVencimiento: String
+	cantidad: Float!
+	unidad: String!
+	estado: Boolean!
+	comprasRealizadas: [DetalleCompra!]!
+	productos: [InsumoProducto!]!
+}
+
+type Compra {
+	id: ID!
+	serie: String!
+	numero: String!
+	precio: Float!
+	fecha: String!
+	insumos: [DetalleCompra!]!
+}
+
+type DetalleCompra {
+	importe: Float!
+	cantidad: Int!
+	unidad: String!
+	insumo: Insumo!
+	compra: Compra!
+}
+
+type TipoProducto {
+	id: ID!
+	nombre: String!
+	productos: [Producto!]!
+}
+
+type Producto {
+	id: ID!
+	nombre: String!
+	descripcion: String!
+	cantidad: Int!
+	precio: Float!
+	imagen: String!
+	estado: Boolean!
+	tipoProducto: TipoProducto!
+	pedidosRealizados: [DetallePedido!]!
+	receta: [InsumoProducto!]!
+}
+
+type InsumoProducto {
+	producto: Producto!
+	insumo: Insumo!
+	cantidad: Float!
+	unidad: String
+}
+
+type Mesa {
+	id: ID!
+	numero: Int!
+	ocupado: Boolean!
+	estado: Boolean!
+	pedidoActual: Pedido
+	pedidosRealizados: [Pedido!]!
+}
+
+type TipoPago {
+	id: ID!
+	nombre: String!
+	pagosPorTipo: [Pago!]!
+}
+
+type Pago {
+	id: ID!
+	serie: String!
+	numero: String!
+	fecha: String!
+	monto: Float!
+	tipoPago: TipoPago!
+	pedido: Pedido!
+}
+
+type Pedido {
+	id: ID!
+	fecha: String!
+	estado: Boolean!
+	pago: Pago!
+	personal: Personal!
+	mesa: Mesa!
+	Reclamo: [Reclamo!]!
+	productos: [DetallePedido!]!
+}
+
+type Reclamo {
+	id: ID!
+	motivo: String!
+	detallePedido: DetallePedido!
+}
+
+type DetallePedido {
+	precio: Float!
+	cantidad: Int!
+	entregado: Boolean!
+	estado: Boolean!
+	pedido: Pedido!
+	producto: Producto!
+	reclamos: [Reclamo!]!
+}
+
+type Query {
+	usuarioActual: Personal
+	listarCargo: [Cargo!]!
+	listarPersonal: [Personal!]!
+	listarInsumo: [Insumo!]!
+	listarCompra: [Compra!]!
+	listarTipoProducto: [TipoProducto!]!
+	listarProducto: [Producto!]!
+	listarMesa: [Mesa!]!
+	listarTipoPago: [TipoPago!]!
+	listarPago: [Pago!]!
+	listarPedido: [Pedido!]!
+}
+
+type Mutation {
+	registrarCargo(nombre: String!): Cargo
+	modificarCargo(id: ID!, nombre: String, estado: Boolean): Cargo
+	eliminarCargo(id: ID!): Cargo
+
+	registrarPersonal(
+		nombres: String!
+		apellidos: String!
+		sueldo: Float!
+		cargo: ID!
+	): Personal
+	modificarPersonal(
+		id: ID!
+		nombres: String
+		apellidos: String
+		sueldo: Float
+		cargo: ID
+		estado: Boolean
+	): Personal
+	eliminarPersonal(id: ID!): Personal
+
+	registrarCredencial(
+		usuario: String!
+		clave: String!
+		personal: ID!
+	): Credencial
+	modificarCredencial(
+		id: ID!
+		usuario: String
+		clave: String
+		estado: Boolean
+	): Credencial
+	eliminarCredencial(id: ID!): Credencial
+}
