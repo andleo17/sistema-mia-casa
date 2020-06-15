@@ -46,10 +46,17 @@ type Compra {
 
 type DetalleCompra {
 	importe: Float!
-	cantidad: Int!
+	cantidad: Float!
 	unidad: String!
 	insumo: Insumo!
 	compra: Compra!
+}
+
+type DetalleCompraInput {
+	insumo: ID!
+	importe: Float
+	cantidad: Float
+	unidad: String
 }
 
 type TipoProducto {
@@ -61,7 +68,7 @@ type TipoProducto {
 type Producto {
 	id: ID!
 	nombre: String!
-	descripcion: String!
+	descripcion: String
 	cantidad: Int!
 	precio: Float!
 	imagen: String!
@@ -75,6 +82,12 @@ type InsumoProducto {
 	producto: Producto!
 	insumo: Insumo!
 	cantidad: Float!
+	unidad: String!
+}
+
+type InsumoProductoInput {
+	producto: ID!
+	cantidad: Float
 	unidad: String
 }
 
@@ -177,4 +190,93 @@ type Mutation {
 		estado: Boolean
 	): Credencial
 	eliminarCredencial(id: ID!): Credencial
+
+	registrarInsumo(
+		nombre: String!
+		fechaVencimiento: String
+		cantidad: Float!
+		unidad: String!
+	): Insumo
+	modificarInsumo(
+		id: ID!
+		nombre: String
+		fechaVencimiento: String
+		cantidad: Float
+		unidad: String
+		estado: Boolean
+	): Insumo
+	eliminarInsumo(id: ID!): Insumo
+
+	registrarCompra(
+		serie: String!
+		numero: String!
+		precio: Float!
+		fecha: String!
+		insumos: [DetalleCompraInput!]!
+	): Compra
+	modificarCompra(
+		id: ID!
+		serie: String!
+		numero: String!
+		precio: Float!
+		fecha: String!
+		insumos: [DetalleCompraInput!]
+	): Compra
+	eliminarCompra(id: ID!): Compra
+
+	registrarTipoProducto(nombre: String!): TipoProducto
+	modificarTipoProducto(
+		id: ID!
+		nombre: String
+		estado: Boolean
+	): TipoProducto
+	eliminarTipoProducto(id: ID!): TipoProducto
+
+	registrarProducto(
+		nombre: String!
+		descripcion: String
+		cantidad: Int!
+		precio: Float!
+		imagen: String!
+		tipoProducto: ID!
+		receta: [InsumoProductoInput!]!
+	): Producto
+	modificarProducto(
+		id: ID!
+		nombre: String
+		descripcion: String
+		cantidad: Int
+		precio: Float
+		imagen: String
+		tipoProducto: ID
+		receta: [InsumoProductoInput!]
+	): Producto
+	eliminarProducto(id: ID!): Producto
+
+	registrarMesa(numero: Int!): Mesa
+	modificarMesa(id: ID!, numero: Int, estado: Boolean): Mesa
+	eliminarMesa(id: ID!): Mesa
+
+	registrarTipoPago(nombre: String!): TipoPago
+	modificarTipoPago(id: ID!, nombre: String, estado: Boolean): TipoPago
+	eliminarTipoPago(id: ID!): TipoPago
+
+	registrarPedido(
+		personal: ID!
+		mesa: ID!
+		productos: [DetallePedido!]!
+	): Pedido
+	modificarPedido(
+		id: ID!
+		productos: [DetallePedido!]!
+		estado: Boolean
+	): Pedido
+	eliminarPedido(id: ID!): Pedido
+
+	registrarPago(monto: Float!, tipoPago: ID!, pedido: ID!): Pago
+	eliminarPago(id: ID!): Pago
+
+	registrarReclamo(motivo: String!, pedido: ID!, producto: ID!): Reclamo
+	modificarReclamo(id: ID!, motivo: String!): Reclamo
+	eliminarReclamo(id: ID!): Reclamo!
 }
