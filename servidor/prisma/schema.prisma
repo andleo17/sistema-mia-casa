@@ -1,0 +1,131 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Cargo {
+  id       Int        @default(autoincrement()) @id
+  nombre   String     @unique
+  personal Personal[]
+}
+
+model Personal {
+  id           Int         @default(autoincrement()) @id
+  nombres      String
+  apellidos    String
+  cargo        Cargo       @relation(fields: [cargoId], references: [id])
+  cargoId      Int
+  credencial   Credencial? @relation(fields: [credencialId], references: [id])
+  credencialId Int?
+  Pedido       Pedido[]
+}
+
+model Credencial {
+  id       Int      @default(autoincrement()) @id
+  usuario  String   @unique
+  clave    String
+  personal Personal
+}
+
+model Insumo {
+  id               Int             @default(autoincrement()) @id
+  nombre           String
+  fechaVencimiento DateTime?
+  compras          DetalleCompra[]
+}
+
+model Compra {
+  id      Int             @default(autoincrement()) @id
+  serie   String
+  numero  String
+  precio  Float
+  fecha   DateTime        @default(now())
+  insumos DetalleCompra[]
+}
+
+model DetalleCompra {
+  insumo   Insumo @relation(fields: [insumoId], references: [id])
+  insumoId Int
+  compra   Compra @relation(fields: [compraId], references: [id])
+  compraId Int
+  importe  Float
+  cantidad Int
+
+  @@id([insumoId, compraId])
+}
+
+model TipoProducto {
+  id        Int        @default(autoincrement()) @id
+  nombre    String     @unique
+  productos Producto[]
+}
+
+model Producto {
+  id             Int             @default(autoincrement()) @id
+  tipoProducto   TipoProducto    @relation(fields: [tipoProductoId], references: [id])
+  tipoProductoId Int
+  nombre         String
+  precio         Float
+  estado         Boolean
+  imagen         String
+  pedidos        DetallePedido[]
+}
+
+model Mesa {
+  id      Int      @default(autoincrement()) @id
+  numero  Int
+  ocupado Boolean
+  Pedido  Pedido[]
+}
+
+model TipoPago {
+  id     Int    @default(autoincrement()) @id
+  nombre String @unique
+  pagos  Pago[]
+}
+
+model Pago {
+  id         Int      @default(autoincrement()) @id
+  serie      String
+  numero     String
+  fecha      DateTime @default(now())
+  monto      Float
+  tipoPago   TipoPago @relation(fields: [tipoPagoId], references: [id])
+  tipoPagoId Int
+  pedido     Pedido   @relation(fields: [pedidoId], references: [id])
+  pedidoId   Int
+}
+
+model Pedido {
+  id         Int             @default(autoincrement()) @id
+  pago       Pago
+  personal   Personal        @relation(fields: [personalId], references: [id])
+  personalId Int
+  mesa       Mesa            @relation(fields: [mesaId], references: [id])
+  mesaId     Int
+  fecha      DateTime        @default(now())
+  Reclamo    Reclamo[]
+  productos  DetallePedido[]
+}
+
+model Reclamo {
+  id       Int    @default(autoincrement()) @id
+  pedido   Pedido @relation(fields: [pedidoId], references: [id])
+  pedidoId Int
+  motivo   String
+}
+
+model DetallePedido {
+  pedido     Pedido   @relation(fields: [pedidoId], references: [id])
+  pedidoId   Int
+  producto   Producto @relation(fields: [productoId], references: [id])
+  productoId Int
+  precio     Float
+  cantidad   Int
+
+  @@id([pedidoId, productoId])
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
