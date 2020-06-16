@@ -22,11 +22,26 @@ function getMutations() {
 			const data = {
 				nombre: args.nombre,
 			};
-			return context.prisma.tipoProducto.create({ data }).catch((err) => null);
+			return context.prisma.tipoProducto
+				.create({ data })
+				.catch((err) => null);
 		},
 		modificarTipoProducto: (parent, args, context) => {
 			const data = {};
 			if (args.nombre) data.nombre = args.nombre;
+			if (args.estado != null) {
+				data.estado = args.estado;
+				if (data.estado == false) {
+					data.productos = {
+						updateMany: {
+							where: {
+								tipoProductoId: parseInt(args.id),
+							},
+							data: { estado: false },
+						},
+					};
+				}
+			}
 			return context.prisma.tipoProducto
 				.update({
 					where: { id: parseInt(args.id) },
@@ -34,8 +49,28 @@ function getMutations() {
 				})
 				.catch((err) => null);
 		},
-		eliminarPersonal: (parent, args, context) => {
-			// TODO: Agregar lógica para eliminar a un personal.
+		eliminarTipoProducto: (parent, args, context) => {
+			const numeroProductos = context.prisma.producto.count({
+				where: { tipoProductoId: parseInt(args.id) },
+			});
+			if (numeroProductos == 0) {
+				return context.prisma.tipoProducto
+					.delete({ where: { id: parseInt(args.id) } })
+					.catch((err) => null);
+			} else {
+				return context.prisma.tipoProducto.update({
+					where: { id: parseInt(args.id) },
+					data: {
+						estado: false,
+						productos: {
+							updateMany: {
+								where: { tipoProductoId: parseInt(args.id) },
+								data: { estado: false },
+							},
+						},
+					},
+				});
+			}
 		},
 	};
 }
