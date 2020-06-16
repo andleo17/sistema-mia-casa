@@ -52,7 +52,7 @@ type DetalleCompra {
 	compra: Compra!
 }
 
-type DetalleCompraInput {
+input DetalleCompraInput {
 	insumo: ID!
 	importe: Float
 	cantidad: Float
@@ -85,7 +85,7 @@ type InsumoProducto {
 	unidad: String!
 }
 
-type InsumoProductoInput {
+input InsumoProductoInput {
 	producto: ID!
 	cantidad: Float
 	unidad: String
@@ -141,6 +141,14 @@ type DetallePedido {
 	pedido: Pedido!
 	producto: Producto!
 	reclamos: [Reclamo!]!
+}
+
+input DetallePedidoInput {
+	producto: ID!
+	precio: Float
+	cantidad: Int
+	entregado: Boolean
+	estado: Boolean
 }
 
 type Query {
@@ -264,11 +272,11 @@ type Mutation {
 	registrarPedido(
 		personal: ID!
 		mesa: ID!
-		productos: [DetallePedido!]!
+		productos: [DetallePedidoInput!]!
 	): Pedido
 	modificarPedido(
 		id: ID!
-		productos: [DetallePedido!]!
+		productos: [DetallePedidoInput!]!
 		estado: Boolean
 	): Pedido
 	eliminarPedido(id: ID!): Pedido
