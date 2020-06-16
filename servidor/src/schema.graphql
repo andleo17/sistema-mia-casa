@@ -236,7 +236,6 @@ type Mutation {
 	modificarTipoProducto(
 		id: ID!
 		nombre: String
-		estado: Boolean
 	): TipoProducto
 	eliminarTipoProducto(id: ID!): TipoProducto
 
