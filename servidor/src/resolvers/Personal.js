@@ -1,17 +1,17 @@
 function getModel() {
 	return {
-		cargo: (parent, args, context) => {
-			return context.prisma.personal
+		cargo: async (parent, args, context) => {
+			return await context.prisma.personal
 				.findOne({ where: { id: parent.id } })
 				.cargo();
 		},
-		credencial: (parent, args, context) => {
-			return context.prisma.personal
+		credencial: async (parent, args, context) => {
+			return await context.prisma.personal
 				.findOne({ where: { id: parent.id } })
 				.credencial();
 		},
-		pedidosAtendidos: (parent, args, context) => {
-			return context.prisma.personal
+		pedidosAtendidos: async (parent, args, context) => {
+			return await context.prisma.personal
 				.findOne({ where: { id: parent.id } })
 				.pedidosAtendidos();
 		},
@@ -20,26 +20,26 @@ function getModel() {
 
 function getQueries() {
 	return {
-		listarPersonal: (parent, args, context) => {
-			return context.prisma.personal.findMany();
+		listarPersonal: async (parent, args, context) => {
+			return await context.prisma.personal.findMany();
 		},
 	};
 }
 
 function getMutations() {
 	return {
-		registrarPersonal: (parent, args, context) => {
+		registrarPersonal: async (parent, args, context) => {
 			const data = {
 				nombres: args.nombres,
 				apellidos: args.apellidos,
 				sueldo: parseFloat(args.sueldo),
 				cargo: { connect: { id: parseInt(args.cargo) } },
 			};
-			return context.prisma.personal
+			return await context.prisma.personal
 				.create({ data })
 				.catch((err) => null);
 		},
-		modificarPersonal: (parent, args, context) => {
+		modificarPersonal: async (parent, args, context) => {
 			const data = {};
 			if (args.nombres) data.nombres = args.nombres;
 			if (args.apellidos) data.apellidos = args.apellidos;
@@ -52,7 +52,7 @@ function getMutations() {
 					data.credencial = { update: { estado: false } };
 				}
 			}
-			return context.prisma.personal
+			return await context.prisma.personal
 				.update({
 					where: { id: parseInt(args.id) },
 					data,

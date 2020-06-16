@@ -1,7 +1,7 @@
 function getModel() {
 	return {
-		productos: (parent, args, context) => {
-			return context.prisma.tipoProducto
+		productos: async (parent, args, context) => {
+			return await context.prisma.tipoProducto
 				.findOne({ where: { id: parent.id } })
 				.productos();
 		},
@@ -10,23 +10,23 @@ function getModel() {
 
 function getQueries() {
 	return {
-		listarTipoProducto: (parent, args, context) => {
-			return context.prisma.tipoProducto.findMany();
+		listarTipoProducto: async (parent, args, context) => {
+			return await context.prisma.tipoProducto.findMany();
 		},
 	};
 }
 
 function getMutations() {
 	return {
-		registrarTipoProducto: (parent, args, context) => {
+		registrarTipoProducto: async (parent, args, context) => {
 			const data = {
 				nombre: args.nombre,
 			};
-			return context.prisma.tipoProducto
+			return await context.prisma.tipoProducto
 				.create({ data })
 				.catch((err) => null);
 		},
-		modificarTipoProducto: (parent, args, context) => {
+		modificarTipoProducto: async (parent, args, context) => {
 			const data = {};
 			if (args.nombre) data.nombre = args.nombre;
 			if (args.estado != null) {
@@ -42,23 +42,23 @@ function getMutations() {
 					};
 				}
 			}
-			return context.prisma.tipoProducto
+			return await context.prisma.tipoProducto
 				.update({
 					where: { id: parseInt(args.id) },
 					data,
 				})
 				.catch((err) => null);
 		},
-		eliminarTipoProducto: (parent, args, context) => {
-			const numeroProductos = context.prisma.producto.count({
+		eliminarTipoProducto: async (parent, args, context) => {
+			const numeroProductos = await context.prisma.producto.count({
 				where: { tipoProductoId: parseInt(args.id) },
 			});
 			if (numeroProductos == 0) {
-				return context.prisma.tipoProducto
+				return await context.prisma.tipoProducto
 					.delete({ where: { id: parseInt(args.id) } })
 					.catch((err) => null);
 			} else {
-				return context.prisma.tipoProducto.update({
+				return await context.prisma.tipoProducto.update({
 					where: { id: parseInt(args.id) },
 					data: {
 						estado: false,

@@ -1,7 +1,7 @@
 function getModel() {
 	return {
-		personal: (parent, args, context) => {
-			return context.prisma.cargo
+		personal: async (parent, args, context) => {
+			return await context.prisma.cargo
 				.findOne({ where: { id: parent.id } })
 				.personal();
 		},
@@ -10,21 +10,23 @@ function getModel() {
 
 function getQueries() {
 	return {
-		listarCargo: (parent, args, context) => {
-			return context.prisma.cargo.findMany();
+		listarCargo: async (parent, args, context) => {
+			return await context.prisma.cargo.findMany();
 		},
 	};
 }
 
 function getMutations() {
 	return {
-		registrarCargo: (parent, args, context) => {
+		registrarCargo: async (parent, args, context) => {
 			const data = {
 				nombre: args.nombre,
 			};
-			return context.prisma.cargo.create({ data }).catch((err) => null);
+			return await context.prisma.cargo
+				.create({ data })
+				.catch((err) => null);
 		},
-		modificarCargo: (parent, args, context) => {
+		modificarCargo: async (parent, args, context) => {
 			const data = {};
 			if (args.nombre) data.nombre = args.nombre;
 			if (args.estado != null) {
@@ -40,20 +42,20 @@ function getMutations() {
 					};
 				}
 			}
-			return context.prisma.cargo
+			return await context.prisma.cargo
 				.update({ where: { id: parseInt(args.id) }, data })
 				.catch((err) => null);
 		},
-		eliminarCargo: (parent, args, context) => {
-			const numeroPersonal = context.prisma.personal.count({
+		eliminarCargo: async (parent, args, context) => {
+			const numeroPersonal = await context.prisma.personal.count({
 				where: { cargoId: parseInt(args.id) },
 			});
 			if (numeroPersonal == 0) {
-				return context.prisma.cargo
+				return await context.prisma.cargo
 					.delete({ where: { id: parseInt(args.id) } })
 					.catch((err) => null);
 			} else {
-				return context.prisma.cargo.update({
+				return await context.prisma.cargo.update({
 					where: { id: parseInt(args.id) },
 					data: {
 						estado: false,
