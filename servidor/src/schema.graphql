@@ -124,7 +124,7 @@ type Pedido {
 	pago: Pago!
 	personal: Personal!
 	mesa: Mesa!
-	Reclamo: [Reclamo!]!
+	reclamo: [Reclamo!]!
 	productos: [DetallePedido!]!
 }
 
@@ -164,6 +164,7 @@ type Query {
 	listarTipoPago: [TipoPago!]!
 	listarPago: [Pago!]!
 	listarPedido: [Pedido!]!
+	listarReclamo: [Reclamo!]!
 }
 
 type Mutation {
@@ -263,11 +264,11 @@ type Mutation {
 	eliminarProducto(id: ID!): Producto
 
 	registrarMesa(numero: Int!): Mesa
-	modificarMesa(id: ID!, numero: Int, estado: Boolean): Mesa
+	modificarMesa(id: ID!, numero: Int, ocupado: Boolean, estado: Boolean): Mesa
 	eliminarMesa(id: ID!): Mesa
 
 	registrarTipoPago(nombre: String!): TipoPago
-	modificarTipoPago(id: ID!, nombre: String, estado: Boolean): TipoPago
+	modificarTipoPago(id: ID!, nombre: String): TipoPago
 	eliminarTipoPago(id: ID!): TipoPago
 
 	registrarPedido(

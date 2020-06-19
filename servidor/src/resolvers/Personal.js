@@ -59,8 +59,22 @@ function getMutations() {
 				})
 				.catch((err) => null);
 		},
-		eliminarPersonal: (parent, args, context) => {
-			// TODO: Agregar lógica para eliminar a un personal.
+		eliminarPersonal: async (parent, args, context) => {
+			const numeroPedidos = await context.prisma.pedido.count({
+				where: { personalId: parseInt(args.id) },
+			});
+			if (numeroPedidos == 0) {
+				return await context.prisma.personal
+					.delete({ where: { id: parseInt(args.id) } })
+					.catch((err) => null);
+			} else {
+				return await context.prisma.personal.update({
+					where: { id: parseInt(args.id) },
+					data: {
+						estado: false,
+					},
+				});
+			}
 		},
 	};
 }

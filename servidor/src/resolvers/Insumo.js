@@ -37,11 +37,11 @@ function getMutations() {
 		},
 		modificarInsumo: async (parent, args, context) => {
 			const data = {};
-			if (args.nombre) nombre = args.nombre;
-			if (args.fechaVencimiento) fechaVencimiento = args.fechaVencimiento;
-			if (args.cantidad) cantidad = args.cantidad;
-			if (args.unidad) unidad = args.unidad;
-			if (args.estado) estado = args.estado;
+			if (args.nombre) data.nombre = args.nombre;
+			if (args.fechaVencimiento) data.fechaVencimiento = args.fechaVencimiento;
+			if (args.cantidad) data.cantidad = args.cantidad;
+			if (args.unidad) data.unidad = args.unidad;
+			if (args.estado) data.estado = args.estado;
 			return await context.prisma.insumo
 				.update({
 					where: { id: parseInt(args.id) },
@@ -51,7 +51,7 @@ function getMutations() {
 		},
 		eliminarInsumo: async (parent, args, context) => {
 			const numeroRecetas = await context.prisma.insumoProducto.count({
-				where: { insumo: parseInt(args.id) },
+				where: { insumoId: parseInt(args.id) },
 			});
 			if (numeroRecetas == 0) {
 				return await context.prisma.insumo
@@ -62,6 +62,12 @@ function getMutations() {
 					where: { id: parseInt(args.id) },
 					data: {
 						estado: false,
+						productos: {
+							updateMany: {
+								where: { insumoId: parseInt(args.id) },
+								data: { estado: false },
+							},
+						},
 					},
 				});
 			}
