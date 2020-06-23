@@ -1,14 +1,19 @@
 function getModel() {
 	return {
+		tipoProducto: async (parent, args, context) => {
+			return await context.prisma.producto
+				.findOne({ where: { id: parent.id } })
+				.tipoProducto();
+		},
 		pedidosRealizados: async (parent, args, context) => {
 			return await context.prisma.producto
 				.findOne({ where: { id: parent.id } })
-				.pedido();
+				.pedidosRealizados();
 		},
 		receta: async (parent, args, context) => {
 			return await context.prisma.producto
 				.findOne({ where: { id: parent.id } })
-				.insumoProducto();
+				.receta();
 		},
 	};
 }
@@ -31,7 +36,16 @@ function getMutations() {
 				precio: args.precio,
 				imagen: args.imagen,
 				estado: args.estado,
-				tipoProducto: args.tipoProducto,
+				tipoProducto: { connect: { id: parseInt(args.tipoProducto) } },
+				receta: {
+					create: args.receta.map((i) => {
+						return {
+							cantidad: i.cantidad,
+							unidad: i.unidad,
+							insumo: { connect: { id: parseInt(i.insumo) } },
+						};
+					}),
+				},
 			};
 			return await context.prisma.producto
 				.create({ data })
@@ -45,30 +59,17 @@ function getMutations() {
 			if (args.precio) data.precio = args.precio;
 			if (args.imagen) data.imagen = args.imagen;
 			if (args.estado) data.estado = args.estado;
-			if (args.tipoProducto) data.tipoProducto = args.tipoProducto;
+			if (args.tipoProducto)
+				data.tipoProducto = {
+					connect: { id: parseInt(args.tipoProducto) },
+				};
+			// TODO: Realizar lógica para actualizar
 			return await context.prisma.producto
 				.update({
 					where: { id: parseInt(args.id) },
 					data,
 				})
 				.catch((err) => null);
-		},
-		eliminarProducto: async (parent, args, context) => {
-			const numeroPedidos = await context.prisma.DetallePedido.count({
-				where: { productoId: parseInt(args.id) },
-			});
-			if (numeroPedidos == 0) {
-				return await context.prisma.producto
-					.delete({ where: { id: parseInt(args.id) } })
-					.catch((err) => null);
-			} else {
-				return await context.prisma.producto.update({
-					where: { id: parseInt(args.id) },
-					data: {
-						estado: false,
-					},
-				});
-			}
 		},
 	};
 }
