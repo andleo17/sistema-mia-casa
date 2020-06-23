@@ -1,0 +1,41 @@
+.btn-shift{
+    background-color: #EE814A;
+    color: white;
+}
+
+.btn-shift:hover{
+    background-color: white;
+    color: black;
+    border: 1px solid;
+    border-color: #EE814A;
+}
+
+.btn-circle{
+    border-radius: 50%;
+}
+
+.icon-list{
+    border-radius: 50%;
+    background-color: gray;
+    font-size: 30px;
+}
+
+.col-btn{
+    text-align: end;
+}
+
+.btn-accion{
+    background-color: #BFE6E0;
+    border-color: #BFE6E0;
+    color: black;
+}
+
+.img-circle{
+    border-radius: 50%;
+}
+
+.card-mesa:hover{
+    box-sizing: border-box;
+    border: 3px solid;
+    border-color: chartreuse;
+}
