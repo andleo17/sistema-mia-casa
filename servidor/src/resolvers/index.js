@@ -12,6 +12,7 @@ const Compra = require('./Compra');
 const DetalleCompra = require('./DetalleCompra');
 const DetallePedido = require('./DetallePedido');
 const Reclamo = require('./Reclamo');
+const InsumoProducto = require('./InsumoProducto');
 const { GraphQLDate, GraphQLDateTime } = require('graphql-iso-date');
 
 module.exports = {
@@ -31,6 +32,7 @@ module.exports = {
 	DetalleCompra: DetalleCompra.getModel(),
 	DetallePedido: DetallePedido.getModel(),
 	Reclamo: Reclamo.getModel(),
+	InsumoProducto: InsumoProducto.getModel(),
 	Query: {
 		...Cargo.getQueries(),
 		...Personal.getQueries(),
