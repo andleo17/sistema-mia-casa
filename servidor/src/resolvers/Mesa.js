@@ -1,9 +1,10 @@
 function getModel() {
 	return {
 		pedidoActual: async (parent, args, context) => {
-			return await context.prisma.mesa
+			const pedidos = await context.prisma.mesa
 				.findOne({ where: { id: parent.id } })
-				.pedidoActual();
+				.pedidosRealizados({ where: { estado: true } });
+			return pedidos[0];
 		},
 		pedidosRealizados: async (parent, args, context) => {
 			return await context.prisma.mesa
@@ -33,9 +34,9 @@ function getMutations() {
 		},
 		modificarMesa: async (parent, args, context) => {
 			const data = {};
-			if(args.numero) data.numero = args.numero;
-			if(args.ocupado != null) data.ocupado = args.ocupado;
-			if(args.estado != null) data.estado = args.estado;
+			if (args.numero) data.numero = args.numero;
+			if (args.ocupado != null) data.ocupado = args.ocupado;
+			if (args.estado != null) data.estado = args.estado;
 			return await context.prisma.mesa
 				.update({
 					where: { id: parseInt(args.id) },

@@ -1,19 +1,23 @@
 const Cargo = require('./Cargo');
 const Credencial = require('./Credencial');
 const Personal = require('./Personal');
-const TipoProducto = require("./TipoProducto");
-const Producto = require("./Producto");
-const Insumo = require("./Insumo");
-const Mesa = require("./Mesa");
-const Pago = require("./Pago");
-const TipoPago = require("./TipoPago");
-const Pedido = require("./Pedido");
-const Compra = require("./Compra");
-const DetalleCompra = require("./DetalleCompra");
-const DetallePedido = require("./DetallePedido");
-const Reclamo = require("./Reclamo");
+const TipoProducto = require('./TipoProducto');
+const Producto = require('./Producto');
+const Insumo = require('./Insumo');
+const Mesa = require('./Mesa');
+const Pago = require('./Pago');
+const TipoPago = require('./TipoPago');
+const Pedido = require('./Pedido');
+const Compra = require('./Compra');
+const DetalleCompra = require('./DetalleCompra');
+const DetallePedido = require('./DetallePedido');
+const Reclamo = require('./Reclamo');
+const InsumoProducto = require('./InsumoProducto');
+const { GraphQLDate, GraphQLDateTime } = require('graphql-iso-date');
 
 module.exports = {
+	Date: GraphQLDate,
+	DateTime: GraphQLDateTime,
 	Cargo: Cargo.getModel(),
 	Credencial: Credencial.getModel(),
 	Personal: Personal.getModel(),
@@ -28,6 +32,7 @@ module.exports = {
 	DetalleCompra: DetalleCompra.getModel(),
 	DetallePedido: DetallePedido.getModel(),
 	Reclamo: Reclamo.getModel(),
+	InsumoProducto: InsumoProducto.getModel(),
 	Query: {
 		...Cargo.getQueries(),
 		...Personal.getQueries(),
