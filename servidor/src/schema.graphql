@@ -1,3 +1,6 @@
+scalar Date
+scalar DateTime
+
 type Cargo {
 	id: ID!
 	nombre: String!
@@ -27,7 +30,7 @@ type Credencial {
 type Insumo {
 	id: ID!
 	nombre: String!
-	fechaVencimiento: String
+	fechaVencimiento: Date
 	cantidad: Float!
 	unidad: String!
 	estado: Boolean!
@@ -40,7 +43,7 @@ type Compra {
 	serie: String!
 	numero: String!
 	precio: Float!
-	fecha: String!
+	fecha: DateTime!
 	insumos: [DetalleCompra!]!
 }
 
@@ -111,7 +114,7 @@ type Pago {
 	id: ID!
 	serie: String!
 	numero: String!
-	fecha: String!
+	fecha: DateTime!
 	monto: Float!
 	tipoPago: TipoPago!
 	pedido: Pedido!
@@ -119,7 +122,7 @@ type Pago {
 
 type Pedido {
 	id: ID!
-	fecha: String!
+	fecha: DateTime!
 	estado: Boolean!
 	pago: Pago!
 	personal: Personal!
