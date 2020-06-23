@@ -23,7 +23,7 @@ function getQueries() {
 
 function getMutations() {
 	return {
-		registrarMesa: async (parent, args, context) => {
+		registrarPago: async (parent, args, context) => {
 			const data = {
 				serie: args.serie,
 				numero: args.numero,
