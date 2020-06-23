@@ -4,8 +4,10 @@ function getModel() {
 			return await context.prisma.insumoProducto
 				.findOne({
 					where: {
-						productoId: parent.productoId,
-						insumoId: parent.insumoId,
+						productoId_insumoId: {
+							productoId: parent.productoId,
+							insumoId: parent.insumoId,
+						},
 					},
 				})
 				.producto();
@@ -14,8 +16,10 @@ function getModel() {
 			return await context.prisma.insumoProducto
 				.findOne({
 					where: {
-						productoId: parent.productoId,
-						insumoId: parent.insumoId,
+						productoId_insumoId: {
+							productoId: parent.productoId,
+							insumoId: parent.insumoId,
+						},
 					},
 				})
 				.insumo();

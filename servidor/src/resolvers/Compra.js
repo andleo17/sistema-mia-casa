@@ -70,6 +70,7 @@ function getMutations() {
 		},
 		eliminarCompra: async (parent, args, context) => {
 			return null;
+			// TODO: Se puede eliminar una compra?
 		},
 	};
 }

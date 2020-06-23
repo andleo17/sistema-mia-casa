@@ -90,7 +90,7 @@ type InsumoProducto {
 }
 
 input InsumoProductoInput {
-	producto: ID!
+	insumo: ID!
 	cantidad: Float
 	unidad: String
 }
@@ -264,7 +264,6 @@ type Mutation {
 		tipoProducto: ID
 		receta: [InsumoProductoInput!]
 	): Producto
-	eliminarProducto(id: ID!): Producto
 
 	registrarMesa(numero: Int!): Mesa
 	modificarMesa(id: ID!, numero: Int, ocupado: Boolean, estado: Boolean): Mesa
