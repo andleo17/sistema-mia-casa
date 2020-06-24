@@ -264,6 +264,7 @@ type Mutation {
 		tipoProducto: ID
 		receta: [InsumoProductoInput!]
 	): Producto
+	eliminarProducto(id: ID!): Producto
 
 	registrarMesa(numero: Int!): Mesa
 	modificarMesa(id: ID!, numero: Int, ocupado: Boolean, estado: Boolean): Mesa
@@ -292,4 +293,7 @@ type Mutation {
 	registrarReclamo(motivo: String!, pedido: ID!, producto: ID!): Reclamo
 	modificarReclamo(id: ID!, motivo: String!): Reclamo
 	eliminarReclamo(id: ID!): Reclamo!
+
+	modificarReceta(producto: ID!, insumo: ID!, cantidad: Int, unidad: String): InsumoProducto
+	eliminarReceta(producto: ID!, insumo: ID!): InsumoProducto
 }

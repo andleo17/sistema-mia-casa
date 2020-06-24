@@ -71,6 +71,36 @@ function getMutations() {
 				})
 				.catch((err) => null);
 		},
+		eliminarProducto: async(parent, args, context) => {
+			const NumeroPedidos = await context.prisma.detallePedido
+				.count({
+					where: { productoId: parseInt(args.id) },
+				});
+			if (NumeroPedidos == 0 ) {
+				await context.prisma.insumoProducto
+					.deleteMany({
+						where: {
+							productoId: parseInt(args.id),
+						},
+					});
+				return await context.prisma.producto
+					.delete({
+						where: {
+							id: parseInt(args.id)
+						},
+					})
+					.catch((err) => err);
+			}else{
+				return await context.prisma.producto
+					.update({
+						where: { id: parseInt(args.id) },
+						data: {
+							estado: false,
+						},
+					})
+					.catch((err) => null);
+			}
+		},
 	};
 }
 

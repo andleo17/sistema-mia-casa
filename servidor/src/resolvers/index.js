@@ -59,5 +59,6 @@ module.exports = {
 		...Pedido.getMutations(),
 		...Compra.getMutations(),
 		...Reclamo.getMutations(),
+		...InsumoProducto.getMutations(),
 	},
 };

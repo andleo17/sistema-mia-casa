@@ -27,6 +27,40 @@ function getModel() {
 	};
 }
 
+function getMutations() {
+	return {
+		modificarReceta: async (parent, args, context) => {
+			const data = {};
+			if (args.cantidad) data.cantidad = args.cantidad;
+			if (args.unidad) data.unidad = args.unidad;
+			return await context.prisma.insumoProducto
+				.update({
+					where: {
+						productoId_insumoId: {
+							productoId: parseInt(args.producto),
+							insumoId: parseInt(args.insumo),
+						},
+					},
+					data,
+				})
+				.catch((err) => null);
+		},
+		eliminarReceta: async(parent, args, context) => {
+			return await context.prisma.insumoProducto
+				.delete({
+					where: {
+						productoId_insumoId: {
+							productoId: parseInt(args.producto),
+							insumoId: parseInt(args.insumo),
+						},
+					},
+				})
+				.catch((err) => null);
+		},
+	}
+}
+
 module.exports = {
 	getModel,
+	getMutations,
 };
