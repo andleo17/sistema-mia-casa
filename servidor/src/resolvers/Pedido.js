@@ -15,11 +15,6 @@ function getModel() {
 				.findOne({ where: { id: parent.id } })
 				.mesa();
 		},
-		reclamo: async (parent, args, context) => {
-			return await context.prisma.pedido
-				.findOne({ where: { id: parent.id } })
-				.reclamo();
-		},
 		productos: async (parent, args, context) => {
 			return await context.prisma.pedido
 				.findOne({ where: { id: parent.id } })
@@ -48,29 +43,29 @@ function getMutations() {
 							producto: { connect: { id: parseInt(i.producto) } },
 							precio: i.precio,
 							cantidad: i.cantidad,
-							entregado: i.entregado,
-							estado: i.estado,
 						};
 					}),
 				},
 			};
+
 			return await context.prisma.pedido
 				.create({ data })
 				.catch((err) => null);
 		},
 		modificarPedido: async (parent, args, context) => {
 			const data = {};
-			if (args.productos) data.productos = {
-				create: args.productos.map((i) => {
-					return {
-						producto: { connect: { id: parseInt(i.producto) } },
-						precio: i.precio,
-						cantidad: i.cantidad,
-						entregado: i.entregado,
-						estado: i.estado,
-					};
-				}),
-			};
+			if (args.productos)
+				data.productos = {
+					create: args.productos.map((i) => {
+						return {
+							producto: { connect: { id: parseInt(i.producto) } },
+							precio: i.precio,
+							cantidad: i.cantidad,
+							entregado: i.entregado,
+							estado: i.estado,
+						};
+					}),
+				};
 			if (args.estado != null) estado = args.estado;
 			if (args.mesa) mesa = { connect: { id: parseInt(args.mesa) } };
 			return await context.prisma.pedido
