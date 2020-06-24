@@ -127,7 +127,6 @@ type Pedido {
 	pago: Pago!
 	personal: Personal!
 	mesa: Mesa!
-	reclamo: [Reclamo!]!
 	productos: [DetallePedido!]!
 }
 
@@ -294,6 +293,11 @@ type Mutation {
 	modificarReclamo(id: ID!, motivo: String!): Reclamo
 	eliminarReclamo(id: ID!): Reclamo!
 
-	modificarReceta(producto: ID!, insumo: ID!, cantidad: Int, unidad: String): InsumoProducto
+	modificarReceta(
+		producto: ID!
+		insumo: ID!
+		cantidad: Int
+		unidad: String
+	): InsumoProducto
 	eliminarReceta(producto: ID!, insumo: ID!): InsumoProducto
 }
