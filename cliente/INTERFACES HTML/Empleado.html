@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shift Solutions</title>
+
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="./assets/css/bustra.css">
+
+    <!--Font Aguazo-->
+    <script src="https://kit.fontawesome.com/bacaeed712.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+
+    <div class="container-fluid mt-5">
+        <div class="row  " style="background: #E4E4E4;">
+
+            <!-- Inicio de cuerpo -->
+            <div class="col-sm-8">
+                <!-- ------------ -->
+                <div class="row  p-2">
+
+                    <div class="card pl-5 " style="width: 100%; ">
+                        <!-- <div class="card-body"> -->
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="form-group row ">
+                                    <div class=" col-sm-6">
+                                        <label for="">Documento:</label> <br>
+                                        <select name="selectorC" id="selectorC" class="btn ">
+                                            <option value="1" disabled selected>Seleccionar</option>
+                                            <option value="2">Dni</option>
+                                            <option value="3">Pasaporte</option>
+                                            <option value="4">Otro</option>
+                                        </select>
+                                    </div>
+                                    <div class=" col-sm-6">
+                                        <label for=""></label>
+                                        <input type="text" placeholder="" class="form-control" style="width: 80%;">
+                                    </div>
+                                </div>
+                                <div class="form-group row ">
+                                    <div class=" col-sm-12">
+                                        <label for="">Nombres:</label> <br>
+                                        <input type="text" placeholder="" class="form-control" style="width: 90%;">
+                                    </div>
+                                </div>
+                                <div class="form-group row ">
+                                    <div class=" col-sm-12">
+                                        <label for="">Apellidos:</label> <br>
+                                        <input type="text" name="txtNumero" id="txtNumero" placeholder=""
+                                            class="form-control" style="width: 90%;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div>
+                                    <div class='prevPhoto border border-0'>
+                                        <span class='delPhoto notBlock font-weight-bold'> X</span>
+                                        <label for='foto'></label>
+                                    </div>
+                                    <div class='upimg '>
+                                        <input src={foto} type='file' name='foto' id='foto' />
+                                    </div>
+                                    <div id='form_alert'></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="form-group row ">
+                                    <div class=" col-sm-6">
+                                        <label for="">País:</label> <br>
+                                        <select name="selectorC" id="selectorC" class="btn ">
+                                            <option value="1" disabled selected>Seleccionar</option>
+                                            <option value="2">Dni</option>
+                                            <option value="3">Pasaporte</option>
+                                            <option value="4">Otro</option>
+                                        </select>
+                                    </div>
+                                    <div class=" col-sm-6">
+                                        <label for="">Estado civil:</label> <br>
+                                        <select name="selectorC" id="selectorC" class="btn ">
+                                            <option value="1" disabled selected>Seleccionar</option>
+                                            <option value="2">Dni</option>
+                                            <option value="3">Pasaporte</option>
+                                            <option value="4">Otro</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row ">
+                                    <div class=" col-sm-6">
+                                        <label for="">Fecha de nacimiento:</label> <br>
+                                        <select name="selectorC" id="selectorC" class="btn ">
+                                            <option value="1" disabled selected>Seleccionar</option>
+                                            <option value="2">Dni</option>
+                                            <option value="3">Pasaporte</option>
+                                            <option value="4">Otro</option>
+                                        </select>
+                                    </div>
+                                    <div class=" col-sm-6">
+                                        <label for="">Grupo sanguíneo:</label> <br>
+                                        <select name="selectorC" id="selectorC" class="btn ">
+                                            <option value="1" disabled selected>Seleccionar</option>
+                                            <option value="2">Dni</option>
+                                            <option value="3">Pasaporte</option>
+                                            <option value="4">Otro</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row ">
+                                    <div class=" col-sm-12">
+                                        <label for="">Correo electrónico:</label> <br>
+                                        <input type="text" name="txtNumero" id="txtNumero" placeholder=""
+                                            class="form-control" style="width: 90%;">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+
+                                <div class="form-group row ">
+                                    <div class=" col-sm-12">
+                                        <label for="">Sexo:</label> <br>
+                                        <select name="selectorC" id="selectorC" class="btn ">
+                                            <option value="1" disabled selected>Seleccionar</option>
+                                            <option value="2">Dni</option>
+                                            <option value="3">Pasaporte</option>
+                                            <option value="4">Otro</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row ">
+                                    <div class=" col-sm-12">
+                                        <label for="">Nivel educativo:</label> <br>
+                                        <select name="selectorC" id="selectorC" class="btn ">
+                                            <option value="1" disabled selected>Seleccionar</option>
+                                            <option value="2">Dni</option>
+                                            <option value="3">Pasaporte</option>
+                                            <option value="4">Otro</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+
+                    <div class="row  p-2">
+
+                        <!-- <div class="card " style="width:100%;   "> -->
+                        <!-- <div class="card-body"> -->
+                        <div class="card pl-5 " style="width: 100%; ">
+                            <!-- <div class="card-body"> -->
+
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group row ">
+                                        <div class=" col-sm-4">
+                                            <label for="">Departamento:</label> <br>
+                                            <select name="selectorC" id="selectorC" class="btn ">
+                                                <option value="1" disabled selected>Seleccionar</option>
+                                                <option value="2">Dni</option>
+                                                <option value="3">Pasaporte</option>
+                                                <option value="4">Otro</option>
+                                            </select>
+                                        </div>
+                                        <div class=" col-sm-4">
+                                            <label for="">Provincia:</label> <br>
+                                            <select name="selectorC" id="selectorC" class="btn ">
+                                                <option value="1" disabled selected>Seleccionar</option>
+                                                <option value="2">Dni</option>
+                                                <option value="3">Pasaporte</option>
+                                                <option value="4">Otro</option>
+                                            </select>
+                                        </div>
+                                        <div class=" col-sm-4">
+                                            <label for="">Distrito:</label> <br>
+                                            <select name="selectorC" id="selectorC" class="btn ">
+                                                <option value="1" disabled selected>Seleccionar</option>
+                                                <option value="2">Dni</option>
+                                                <option value="3">Pasaporte</option>
+                                                <option value="4">Otro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row ">
+                                        <div class=" col-sm-8">
+                                            <label for="">Dirección:</label> <br>
+                                            <input type="text" name="txtNumero" id="txtNumero" placeholder=""
+                                            class="form-control" style="width: 90%;">
+                                        </div>
+                                        <div class=" col-sm-4">
+                                            <label for="">Tipo de zona:</label> <br>
+                                            <select name="selectorC" id="selectorC" class="btn ">
+                                                <option value="1" disabled selected>Seleccionar</option>
+                                                <option value="2">Dni</option>
+                                                <option value="3">Pasaporte</option>
+                                                <option value="4">Otro</option>
+                                            </select>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="form-group row ">
+                                        <div class=" col-sm-4">
+                                            <label for="">Número de celular:</label> <br>
+                                            <input type="number"placeholder=""
+                                            class="form-control" style="width: 80%;">
+                                        </div>
+                                        <div class=" col-sm-4">
+                                            <label for="">Número de domicilio:</label> <br>
+                                            <input type="text" placeholder=""
+                                            class="form-control" style="width: 80%;">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row ">
+                                        <div class=" col-sm-4">
+                                            <label for="">Entidad financiera:</label> <br>
+                                            <select name="selectorC" id="selectorC" class="btn ">
+                                                <option value="1" disabled selected>Seleccionar</option>
+                                                <option value="2">Dni</option>
+                                                <option value="3">Pasaporte</option>
+                                                <option value="4">Otro</option>
+                                            </select>
+                                        </div>
+                                        <div class=" col-sm-4">
+                                            <label for="">Tipo de cuenta:</label> <br>
+                                            <select name="selectorC" id="selectorC" class="btn ">
+                                                <option value="1" disabled selected>Seleccionar</option>
+                                                <option value="2">Dni</option>
+                                                <option value="3">Pasaporte</option>
+                                                <option value="4">Otro</option>
+                                            </select>
+                                        </div>
+                                        <div class=" col-sm-4">
+                                            <label for="">Moneda:</label> <br>
+                                            <select name="selectorC" id="selectorC" class="btn ">
+                                                <option value="1" disabled selected>Seleccionar</option>
+                                                <option value="2">Dni</option>
+                                                <option value="3">Pasaporte</option>
+                                                <option value="4">Otro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row ">
+                                        <div class=" col-sm-8">
+                                            <label for="">Número de cuenta:</label> <br>
+                                            <input type="text"  placeholder=""
+                                            class="form-control" style="width: 90%;">
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="form-group row ">
+                                        <div class=" col-sm-4">
+                                            <label for="">Usuario:</label> <br>
+                                            <input type="text"  placeholder=""
+                                            class="form-control" style="width: 90%;">
+                                        </div>
+                                        <div class=" col-sm-4">
+                                            <label for="">Rol:</label> <br>
+                                            <select name="selectorC" id="selectorC" class="btn ">
+                                                <option value="1" disabled selected>Seleccionar</option>
+                                                <option value="2">Dni</option>
+                                                <option value="3">Pasaporte</option>
+                                                <option value="4">Otro</option>
+                                            </select>
+                                        </div>
+                                        <div class=" col-sm-4">
+                                            <label for="">Estado:</label> <br>
+                                            <input type="checkbox" placeholder=""> <label for="">Vigente</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Barra lateral -->
+                <div class="col-sm-4 mt-2">
+                    <div class="card" style="width:100%;">
+                        <div class="card-body">
+                            <h5 class="card-title">Listado de Empleados</h5>
+                            <div class="input-group mb-3 pl-4">
+                                <input type="search" class="form-control" placeholder="Buscar..."
+                                    aria-label="Busque un pago">
+                                <div class="input-group-append">
+                                    <button class="btn btn-shift" type="button"><i class="fa fa-plus"></i>
+                                        Agregar</button>
+                                </div>
+                            </div>
+
+                            <!--Listado de Empleados-->
+                            <div class="pl-4" style="height: 30rem; overflow-y: auto;">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-2 row align-items-center">
+                                                <img src="https://i2.wp.com/digitalpolicylaw.com/wp-content/uploads/2019/04/dplnews_efectivo_jb190419.jpg?fit=650%2C401&ssl=1"
+                                                    class="img-fluid" alt="Responsive image">
+                                            </div>
+                                            <div class="col-6">
+                                                <h4>Pago 255697</h4>
+                                            </div>
+                                            <div class="col-4 col-btn align-self-end">
+                                                <button class="btn btn-primary btn-accion btn-circle"><i
+                                                        class="fa fa-search"></i></button>
+                                                <button class="btn btn-danger btn-accion btn-circle"><i
+                                                        class="fa fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- JS, Popper.js, and jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>
