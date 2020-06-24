@@ -282,6 +282,7 @@ type Mutation {
 		id: ID!
 		productos: [DetallePedidoInput!]!
 		estado: Boolean
+		mesa: ID
 	): Pedido
 	eliminarPedido(id: ID!): Pedido
 

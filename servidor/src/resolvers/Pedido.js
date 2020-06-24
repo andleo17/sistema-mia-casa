@@ -40,9 +40,19 @@ function getMutations() {
 	return {
 		registrarPedido: async (parent, args, context) => {
 			const data = {
-				personal: args.personal,
-				mesa: args.mesa,
-				productos: { connect: { id: parseInt(args.productos) } },
+				personal: { connect: { id: parseInt(args.personal) } },
+				mesa: { connect: { id: parseInt(args.mesa) } },
+				productos: {
+					create: args.productos.map((i) => {
+						return {
+							producto: { connect: { id: parseInt(i.producto) } },
+							precio: i.precio,
+							cantidad: i.cantidad,
+							entregado: i.entregado,
+							estado: i.estado,
+						};
+					}),
+				},
 			};
 			return await context.prisma.pedido
 				.create({ data })
@@ -50,8 +60,19 @@ function getMutations() {
 		},
 		modificarPedido: async (parent, args, context) => {
 			const data = {};
-			if (args.productos) data.productos = { connect: { id: parseInt(args.productos) } };
+			if (args.productos) data.productos = {
+				create: args.productos.map((i) => {
+					return {
+						producto: { connect: { id: parseInt(i.producto) } },
+						precio: i.precio,
+						cantidad: i.cantidad,
+						entregado: i.entregado,
+						estado: i.estado,
+					};
+				}),
+			};
 			if (args.estado != null) estado = args.estado;
+			if (args.mesa) mesa = { connect: { id: parseInt(args.mesa) } };
 			return await context.prisma.pedido
 				.update({
 					where: { id: parseInt(args.id) },
@@ -61,7 +82,7 @@ function getMutations() {
 		},
 		eliminarPedido: async (parent, args, context) => {
 			const numeroPagos = await context.prisma.pago.count({
-				where: { personalId: parseInt(args.id) },
+				where: { pedidoId: parseInt(args.id) },
 			});
 			if (numeroPagos == 0) {
 				return await context.prisma.pedido
