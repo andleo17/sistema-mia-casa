@@ -1,0 +1,45 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "Rol",
+      "values": [
+        "ADMIN",
+        "USUARIO"
+      ]
+    },
+    {
+      "tag": "CreateField",
+      "model": "Credencial",
+      "field": "rol",
+      "type": "Rol",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Credencial",
+          "field": "rol"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Credencial",
+          "field": "rol"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "USUARIO"
+    }
+  ]
+}
