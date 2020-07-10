@@ -29,9 +29,9 @@ async function listarPedido(parent, args, context) {
 }
 
 async function registrarPedido(parent, args, context) {
-	const { usuarioId } = obtenerUsuario(context);
+	const { id } = context.usuario;
 	const data = {
-		personal: { connect: { id: usuarioId } },
+		personal: { connect: { id } },
 		mesa: { connect: { id: parseInt(args.mesa) } },
 		productos: {
 			create: args.productos.map((i) => {

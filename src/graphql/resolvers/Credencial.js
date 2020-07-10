@@ -1,5 +1,5 @@
 import { hash, compare } from 'bcryptjs';
-import { obtenerUsuario, APP_SECRET } from '../../utils/utils';
+import { APP_SECRET } from '../../utils/utils';
 import { sign } from 'jsonwebtoken';
 import {
 	CLAVE_INCORRECTA,
@@ -25,7 +25,11 @@ async function login(parent, args, context) {
 			if (valido) {
 				return {
 					token: sign(
-						{ usuarioId: usuario.id, rol: usuario.rol },
+						{
+							id: usuario.id,
+							rol: usuario.rol,
+							cliente: context.usuario.cliente,
+						},
 						APP_SECRET
 					),
 					personal: usuario.personal,
@@ -42,14 +46,14 @@ async function login(parent, args, context) {
 }
 
 async function usuarioActual(parent, args, context) {
-	const { usuarioId } = obtenerUsuario(context);
+	const { id } = context.usuario;
 	return await context.prisma.credencial
-		.findOne({ where: { id: usuarioId } })
+		.findOne({ where: { id } })
 		.personal();
 }
 
 async function registrarCredencial(parent, args, context) {
-	const { rol } = obtenerUsuario(context);
+	const { rol } = context.usuario;
 	if (rol === 'ADMIN') {
 		const clave = await hash(args.password, 10);
 		const data = {
@@ -66,7 +70,7 @@ async function registrarCredencial(parent, args, context) {
 }
 
 async function modificarCredencial(parent, args, context) {
-	const { rol } = obtenerUsuario(context);
+	const { rol } = context.usuario;
 	if (rol === 'ADMIN') {
 		const data = {};
 		if (args.usuario) data.usuario = args.usuario;
@@ -87,7 +91,7 @@ async function modificarCredencial(parent, args, context) {
 }
 
 async function eliminarCredencial(parent, args, context) {
-	const { rol } = obtenerUsuario(context);
+	const { rol } = context.usuario;
 	if (rol === 'ADMIN') {
 		return await context.prisma.credencial
 			.delete({
