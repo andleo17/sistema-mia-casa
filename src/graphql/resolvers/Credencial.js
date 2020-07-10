@@ -1,6 +1,12 @@
-import { hash } from 'bcryptjs';
-import { obtenerUsuario, APP_SECRET } from '../../utils';
+import { hash, compare } from 'bcryptjs';
+import { obtenerUsuario, APP_SECRET } from '../../utils/utils';
 import { sign } from 'jsonwebtoken';
+import {
+	CLAVE_INCORRECTA,
+	USUARIO_BANEADO,
+	NO_ENCONTRADO,
+	NO_ADMIN,
+} from '../../utils/errors';
 
 async function personal(parent, args, context) {
 	return await context.prisma.credencial
@@ -11,23 +17,35 @@ async function personal(parent, args, context) {
 async function login(parent, args, context) {
 	const usuario = await context.prisma.credencial.findOne({
 		where: { usuario: args.usuario },
+		include: { personal: true },
 	});
 	if (usuario) {
-		const valido = args.clave === usuario.clave;
-		if (valido) {
-			return {
-				token: sign(
-					{ usuarioId: usuario.id, rol: usuario.rol },
-					APP_SECRET
-				),
-				credencial: usuario,
-			};
+		if (usuario.estado) {
+			const valido = await compare(args.clave, usuario.clave);
+			if (valido) {
+				return {
+					token: sign(
+						{ usuarioId: usuario.id, rol: usuario.rol },
+						APP_SECRET
+					),
+					personal: usuario.personal,
+				};
+			} else {
+				throw new Error(CLAVE_INCORRECTA);
+			}
 		} else {
-			throw new Error('Contraseña inválida.');
+			throw new Error(USUARIO_BANEADO);
 		}
 	} else {
-		throw new Error('Usuario no encontrado.');
+		throw new Error(NO_ENCONTRADO('Usuario'));
 	}
+}
+
+async function usuarioActual(parent, args, context) {
+	const { usuarioId } = obtenerUsuario(context);
+	return await context.prisma.credencial
+		.findOne({ where: { id: usuarioId } })
+		.personal();
 }
 
 async function registrarCredencial(parent, args, context) {
@@ -43,7 +61,7 @@ async function registrarCredencial(parent, args, context) {
 			.create({ data })
 			.catch((err) => null);
 	} else {
-		throw new Error('No tiene permiso de administrador.');
+		throw new Error(NO_ADMIN);
 	}
 }
 
@@ -64,7 +82,7 @@ async function modificarCredencial(parent, args, context) {
 			})
 			.catch((err) => null);
 	} else {
-		throw new Error('No tiene permiso de administrador.');
+		throw new Error(NO_ADMIN);
 	}
 }
 
@@ -77,7 +95,7 @@ async function eliminarCredencial(parent, args, context) {
 			})
 			.catch((err) => null);
 	} else {
-		throw new Error('No tiene permiso de administrador.');
+		throw new Error(NO_ADMIN);
 	}
 }
 
@@ -87,6 +105,7 @@ export const Credencial = {
 
 export const Query = {
 	login,
+	usuarioActual,
 };
 
 export const Mutation = {

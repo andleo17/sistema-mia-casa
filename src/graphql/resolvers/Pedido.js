@@ -1,3 +1,5 @@
+import { obtenerUsuario } from '../../utils/utils';
+
 async function pago(parent, args, context) {
 	return await context.prisma.pedido
 		.findOne({ where: { id: parent.id } })
@@ -27,8 +29,9 @@ async function listarPedido(parent, args, context) {
 }
 
 async function registrarPedido(parent, args, context) {
+	const { usuarioId } = obtenerUsuario(context);
 	const data = {
-		personal: { connect: { id: parseInt(args.personal) } },
+		personal: { connect: { id: usuarioId } },
 		mesa: { connect: { id: parseInt(args.mesa) } },
 		productos: {
 			create: args.productos.map((i) => {

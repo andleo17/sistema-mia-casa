@@ -9,6 +9,7 @@ type Credencial {
 
 type Query {
 	login(usuario: String!, clave: String!): Autenticacion
+	usuarioActual: Personal
 }
 
 type Mutation {
@@ -28,7 +29,7 @@ type Mutation {
 
 type Autenticacion {
 	token: String!
-	credencial: Credencial!
+	personal: Personal!
 }
 
 enum Rol {

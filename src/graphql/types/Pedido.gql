@@ -13,11 +13,7 @@ type Query {
 }
 
 type Mutation {
-	registrarPedido(
-		personal: ID!
-		mesa: ID!
-		productos: [DetallePedidoInput!]!
-	): Pedido
+	registrarPedido(mesa: ID!, productos: [DetallePedidoInput!]!): Pedido
 	modificarPedido(
 		id: ID!
 		productos: [DetallePedidoInput!]!
