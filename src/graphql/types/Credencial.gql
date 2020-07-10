@@ -3,7 +3,12 @@ type Credencial {
 	usuario: String!
 	clave: String!
 	estado: Boolean!
+	rol: Rol!
 	personal: Personal!
+}
+
+type Query {
+	login(usuario: String!, clave: String!): Autenticacion
 }
 
 type Mutation {
@@ -19,4 +24,14 @@ type Mutation {
 		estado: Boolean
 	): Credencial
 	eliminarCredencial(id: ID!): Credencial
+}
+
+type Autenticacion {
+	token: String!
+	credencial: Credencial!
+}
+
+enum Rol {
+	ADMIN
+	USUARIO
 }

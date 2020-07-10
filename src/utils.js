@@ -2,13 +2,12 @@ import { verify } from 'jsonwebtoken';
 
 export const APP_SECRET = 'sistema-mia-casa';
 
-export function obtenerUsuarioId(context) {
-	const authorization = context.request.get('Authorization');
+export function obtenerUsuario({ req }) {
+	const authorization = req.get('Authorization');
 	if (authorization) {
-		const token = Authorization.replace('Bearer ', '');
-		const { usuarioId } = verify(token, APP_SECRET);
-		return usuarioId;
+		const token = authorization.replace('Bearer ', '');
+		return verify(token, APP_SECRET);
 	}
 
-	throw new Error('Not authenticated');
+	throw new Error('No autenticado');
 }
