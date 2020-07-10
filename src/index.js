@@ -8,12 +8,7 @@ const prisma = new PrismaClient();
 const server = new ApolloServer({
 	typeDefs,
 	resolvers,
-	context: (request) => {
-		return {
-			...request,
-			prisma,
-		};
-	},
+	context: (request) => ({ ...request, prisma }),
 });
 
 server.listen().then(({ url }) => {
