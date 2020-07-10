@@ -1,0 +1,18 @@
+type Pago {
+	id: ID!
+	serie: String!
+	numero: String!
+	fecha: DateTime!
+	monto: Float!
+	tipoPago: TipoPago!
+	pedido: Pedido!
+}
+
+type Query {
+	listarPago: [Pago!]!
+}
+
+type Mutation {
+	registrarPago(monto: Float!, tipoPago: ID!, pedido: ID!): Pago
+	eliminarPago(id: ID!): Pago
+}

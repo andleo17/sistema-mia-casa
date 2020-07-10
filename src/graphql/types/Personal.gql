@@ -1,0 +1,33 @@
+type Personal {
+	id: ID!
+	nombres: String!
+	apellidos: String!
+	sueldo: Float!
+	estado: Boolean!
+	cargo: Cargo!
+	credencial: Credencial
+	pedidosAtendidos: [Pedido!]!
+}
+
+type Query {
+	listarPersonal: [Personal!]!
+	usuarioActual: Personal
+}
+
+type Mutation {
+	registrarPersonal(
+		nombres: String!
+		apellidos: String!
+		sueldo: Float!
+		cargo: ID!
+	): Personal
+	modificarPersonal(
+		id: ID!
+		nombres: String
+		apellidos: String
+		sueldo: Float
+		cargo: ID
+		estado: Boolean
+	): Personal
+	eliminarPersonal(id: ID!): Personal
+}

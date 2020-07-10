@@ -1,0 +1,32 @@
+type Insumo {
+	id: ID!
+	nombre: String!
+	fechaVencimiento: Date
+	cantidad: Float!
+	unidad: String!
+	estado: Boolean!
+	comprasRealizadas: [DetalleCompra!]!
+	productos: [InsumoProducto!]!
+}
+
+type Query {
+	listarInsumo: [Insumo!]!
+}
+
+type Mutation {
+	registrarInsumo(
+		nombre: String!
+		fechaVencimiento: String
+		cantidad: Float!
+		unidad: String!
+	): Insumo
+	modificarInsumo(
+		id: ID!
+		nombre: String
+		fechaVencimiento: String
+		cantidad: Float
+		unidad: String
+		estado: Boolean
+	): Insumo
+	eliminarInsumo(id: ID!): Insumo
+}

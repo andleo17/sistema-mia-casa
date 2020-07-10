@@ -1,0 +1,15 @@
+type TipoPago {
+	id: ID!
+	nombre: String!
+	pagosPorTipo: [Pago!]!
+}
+
+type Query {
+	listarTipoPago: [TipoPago!]!
+}
+
+type Mutation {
+	registrarTipoPago(nombre: String!): TipoPago
+	modificarTipoPago(id: ID!, nombre: String): TipoPago
+	eliminarTipoPago(id: ID!): TipoPago
+}

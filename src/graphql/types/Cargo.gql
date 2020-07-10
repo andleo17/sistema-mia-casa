@@ -1,0 +1,16 @@
+type Cargo {
+	id: ID!
+	nombre: String!
+	estado: Boolean!
+	personal: [Personal!]!
+}
+
+type Query {
+	listarCargo: [Cargo!]!
+}
+
+type Mutation {
+	registrarCargo(nombre: String!): Cargo
+	modificarCargo(id: ID!, nombre: String, estado: Boolean): Cargo
+	eliminarCargo(id: ID!): Cargo
+}

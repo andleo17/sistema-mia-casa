@@ -1,0 +1,28 @@
+type Pedido {
+	id: ID!
+	fecha: DateTime!
+	estado: Boolean!
+	pago: Pago!
+	personal: Personal!
+	mesa: Mesa!
+	productos: [DetallePedido!]!
+}
+
+type Query {
+	listarPedido: [Pedido!]!
+}
+
+type Mutation {
+	registrarPedido(
+		personal: ID!
+		mesa: ID!
+		productos: [DetallePedidoInput!]!
+	): Pedido
+	modificarPedido(
+		id: ID!
+		productos: [DetallePedidoInput!]!
+		estado: Boolean
+		mesa: ID
+	): Pedido
+	eliminarPedido(id: ID!): Pedido
+}

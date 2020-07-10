@@ -1,0 +1,14 @@
+type DetalleCompra {
+	importe: Float!
+	cantidad: Float!
+	unidad: String!
+	insumo: Insumo!
+	compra: Compra!
+}
+
+input DetalleCompraInput {
+	insumo: ID!
+	importe: Float
+	cantidad: Float
+	unidad: String
+}

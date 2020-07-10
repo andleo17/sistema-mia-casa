@@ -1,13 +1,13 @@
-const { GraphQLServer } = require('graphql-yoga');
-const { PrismaClient } = require('@prisma/client');
-const Resolvers = require('./resolvers');
+import { ApolloServer } from 'apollo-server';
+import { PrismaClient } from '@prisma/client';
+import resolvers from './graphql/resolvers.js';
+import typeDefs from './graphql/typeDefs.js';
+
 const prisma = new PrismaClient();
 
-const server = new GraphQLServer({
-	typeDefs: './src/schema.graphql',
-	resolvers: {
-		...Resolvers,
-	},
+const server = new ApolloServer({
+	typeDefs,
+	resolvers,
 	context: (request) => {
 		return {
 			...request,
@@ -16,4 +16,6 @@ const server = new GraphQLServer({
 	},
 });
 
-server.start(() => console.log('Server is running on http://localhost:4000/'));
+server.listen().then(({ url }) => {
+	console.log(`Servidor iniciado en ${url}`);
+});

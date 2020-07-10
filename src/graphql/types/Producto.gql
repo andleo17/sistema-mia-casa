@@ -1,0 +1,39 @@
+type Producto {
+	id: ID!
+	nombre: String!
+	descripcion: String
+	cantidad: Int!
+	precio: Float!
+	imagen: String!
+	estado: Boolean!
+	tipoProducto: TipoProducto!
+	pedidosRealizados: [DetallePedido!]!
+	receta: [InsumoProducto!]!
+}
+
+type Query {
+	listarProducto: [Producto!]!
+}
+
+type Mutation {
+	registrarProducto(
+		nombre: String!
+		descripcion: String
+		cantidad: Int!
+		precio: Float!
+		imagen: String!
+		tipoProducto: ID!
+		receta: [InsumoProductoInput!]!
+	): Producto
+	modificarProducto(
+		id: ID!
+		nombre: String
+		descripcion: String
+		cantidad: Int
+		precio: Float
+		imagen: String
+		tipoProducto: ID
+		receta: [InsumoProductoInput!]
+	): Producto
+	eliminarProducto(id: ID!): Producto
+}

@@ -1,0 +1,31 @@
+type Compra {
+	id: ID!
+	serie: String!
+	numero: String!
+	precio: Float!
+	fecha: DateTime!
+	insumos: [DetalleCompra!]!
+}
+
+type Query {
+	listarCompra: [Compra!]!
+}
+
+type Mutation {
+	registrarCompra(
+		serie: String!
+		numero: String!
+		precio: Float!
+		fecha: String!
+		insumos: [DetalleCompraInput!]!
+	): Compra
+	modificarCompra(
+		id: ID!
+		serie: String!
+		numero: String!
+		precio: Float!
+		fecha: String!
+		insumos: [DetalleCompraInput!]
+	): Compra
+	eliminarCompra(id: ID!): Compra
+}

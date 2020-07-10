@@ -1,0 +1,20 @@
+type TipoProducto {
+	id: ID!
+	nombre: String!
+	estado: Boolean!
+	productos: [Producto!]!
+}
+
+type Query {
+	listarTipoProducto: [TipoProducto!]!
+}
+
+type Mutation {
+	registrarTipoProducto(nombre: String!): TipoProducto
+	modificarTipoProducto(
+		id: ID!
+		nombre: String
+		estado: Boolean
+	): TipoProducto
+	eliminarTipoProducto(id: ID!): TipoProducto
+}

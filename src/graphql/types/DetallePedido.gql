@@ -1,0 +1,17 @@
+type DetallePedido {
+	precio: Float!
+	cantidad: Int!
+	entregado: Boolean!
+	estado: Boolean!
+	pedido: Pedido!
+	producto: Producto!
+	reclamos: [Reclamo!]!
+}
+
+input DetallePedidoInput {
+	producto: ID!
+	precio: Float
+	cantidad: Int
+	entregado: Boolean
+	estado: Boolean
+}

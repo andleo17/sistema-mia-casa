@@ -1,0 +1,22 @@
+type Credencial {
+	id: ID!
+	usuario: String!
+	clave: String!
+	estado: Boolean!
+	personal: Personal!
+}
+
+type Mutation {
+	registrarCredencial(
+		usuario: String!
+		clave: String!
+		personal: ID!
+	): Credencial
+	modificarCredencial(
+		id: ID!
+		usuario: String
+		clave: String
+		estado: Boolean
+	): Credencial
+	eliminarCredencial(id: ID!): Credencial
+}

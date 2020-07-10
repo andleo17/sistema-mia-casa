@@ -1,0 +1,22 @@
+type InsumoProducto {
+	producto: Producto!
+	insumo: Insumo!
+	cantidad: Float!
+	unidad: String!
+}
+
+input InsumoProductoInput {
+	insumo: ID!
+	cantidad: Float
+	unidad: String
+}
+
+type Mutation {
+	modificarReceta(
+		producto: ID!
+		insumo: ID!
+		cantidad: Int
+		unidad: String
+	): InsumoProducto
+	eliminarReceta(producto: ID!, insumo: ID!): InsumoProducto
+}

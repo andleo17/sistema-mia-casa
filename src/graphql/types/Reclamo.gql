@@ -1,0 +1,15 @@
+type Reclamo {
+	id: ID!
+	motivo: String!
+	detallePedido: DetallePedido!
+}
+
+type Query {
+	listarReclamo: [Reclamo!]!
+}
+
+type Mutation {
+	registrarReclamo(motivo: String!, pedido: ID!, producto: ID!): Reclamo
+	modificarReclamo(id: ID!, motivo: String!): Reclamo
+	eliminarReclamo(id: ID!): Reclamo!
+}

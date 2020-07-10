@@ -1,0 +1,18 @@
+type Mesa {
+	id: ID!
+	numero: Int!
+	ocupado: Boolean!
+	estado: Boolean!
+	pedidoActual: Pedido
+	pedidosRealizados: [Pedido!]!
+}
+
+type Query {
+	listarMesa: [Mesa!]!
+}
+
+type Mutation {
+	registrarMesa(numero: Int!): Mesa
+	modificarMesa(id: ID!, numero: Int, ocupado: Boolean, estado: Boolean): Mesa
+	eliminarMesa(id: ID!): Mesa
+}
