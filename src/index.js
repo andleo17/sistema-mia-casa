@@ -15,6 +15,9 @@ const server = new ApolloServer({
 	},
 });
 
-server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-	console.log(`Servidor iniciado en ${url}`);
-});
+server
+	.listen({ port: process.env.PORT || 4000 })
+	.then(({ url, subscriptionsUrl }) => {
+		console.log(`Servidor iniciado en ${url}`);
+		console.log(`Subscripciones en ${subscriptionsUrl}`);
+	});
