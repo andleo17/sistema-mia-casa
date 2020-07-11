@@ -2,11 +2,11 @@ type Cargo {
 	id: ID!
 	nombre: String!
 	estado: Boolean!
-	personal: [Personal!]!
+	personal(pagina: Int, cantidad: Int): [Personal!]!
 }
 
 type Query {
-	listarCargo: [Cargo!]!
+	listarCargo(filtro: String, pagina: Int, cantidad: Int): [Cargo!]!
 }
 
 type Mutation {

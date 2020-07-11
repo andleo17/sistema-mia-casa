@@ -6,3 +6,6 @@ export const USUARIO_BANEADO = 'Usuario baneado.';
 export function NO_ENCONTRADO(tabla) {
 	return `${tabla} no encontrado(a).`;
 }
+export function CAMPO_NO_ADMIN(campo) {
+	return `No se puede acceder al campo "${campo}" porque no es administrador.`;
+}
