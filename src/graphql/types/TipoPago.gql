@@ -1,7 +1,7 @@
 type TipoPago {
 	id: ID!
 	nombre: String!
-	pagosPorTipo: [Pago!]!
+	pagosPorTipo(pagina: Int, cantidad: Int): [Pago!]!
 }
 
 type Query {
@@ -10,6 +10,6 @@ type Query {
 
 type Mutation {
 	registrarTipoPago(nombre: String!): TipoPago
-	modificarTipoPago(id: ID!, nombre: String): TipoPago
+	modificarTipoPago(id: ID!, nombre: String, estado: Boolean): TipoPago
 	eliminarTipoPago(id: ID!): TipoPago
 }
