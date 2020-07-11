@@ -34,7 +34,17 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
+CREATE OR REPLACE FUNCTION fn_tg_dar_baja_tipo_producto() RETURNS TRIGGER AS
+$$
+BEGIN
+	UPDATE "Producto" SET "estado" = FALSE WHERE "tipoProductoId" = NEW."id";
+	RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+
 CREATE TRIGGER tg_dar_baja_cargo BEFORE UPDATE ON "Cargo" FOR EACH ROW WHEN (NEW."estado" = FALSE) EXECUTE PROCEDURE fn_tg_dar_baja_cargo();
 CREATE TRIGGER tg_dar_baja_personal BEFORE UPDATE ON "Personal" FOR EACH ROW WHEN (NEW."estado" = FALSE) EXECUTE PROCEDURE fn_tg_dar_baja_personal();
 CREATE TRIGGER tg_registrar_pedido AFTER INSERT ON "Pedido" FOR EACH ROW EXECUTE PROCEDURE fn_tg_registrar_pedido();
 CREATE TRIGGER tg_registrar_detalle_pedido AFTER INSERT ON "DetallePedido" FOR EACH ROW EXECUTE PROCEDURE fn_tg_registrar_detalle_pedido();
+CREATE TRIGGER tg_dar_baja_tipo_producto BEFORE UPDATE ON "TipoProducto" FOR EACH ROW WHEN (NEW."estado" = FALSE) EXECUTE PROCEDURE fn_tg_dar_baja_tipo_producto();

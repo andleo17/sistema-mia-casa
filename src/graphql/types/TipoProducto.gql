@@ -2,11 +2,15 @@ type TipoProducto {
 	id: ID!
 	nombre: String!
 	estado: Boolean!
-	productos: [Producto!]!
+	productos(pagina: Int, cantidad: Int): [Producto!]!
 }
 
 type Query {
-	listarTipoProducto: [TipoProducto!]!
+	listarTipoProducto(
+		filtro: String
+		pagina: Int
+		cantidad: Int
+	): [TipoProducto!]!
 }
 
 type Mutation {

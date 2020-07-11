@@ -1,5 +1,5 @@
 import { AuthenticationError } from 'apollo-server';
-import { NO_ADMIN, CAMPO_NO_ADMIN } from '../../utils/errors';
+import { CAMPO_NO_ADMIN } from '../../utils/errors';
 
 async function personal({ id }, args, { usuario, prisma }) {
 	if (usuario.rol !== 'ADMIN')

@@ -1,66 +1,44 @@
-async function productos(parent, args, context) {
-	return await context.prisma.tipoProducto
-		.findOne({ where: { id: parent.id } })
-		.productos();
+async function productos({ id }, args, { prisma }) {
+	return await prisma.tipoProducto.findOne({ where: { id } }).productos({
+		skip: (args.pagina - 1) * args.cantidad || undefined,
+		take: args.cantidad,
+	});
 }
 
-async function listarTipoProducto(parent, args, context) {
-	return await context.prisma.tipoProducto.findMany();
+async function listarTipoProducto(parent, args, { prisma }) {
+	return await prisma.tipoProducto.findMany({
+		where: { nombre: { contains: args.filtro } },
+		skip: (args.pagina - 1) * args.cantidad || undefined,
+		take: args.cantidad,
+		orderBy: { id: 'asc' },
+	});
 }
 
-async function registrarTipoProducto(parent, args, context) {
-	const data = {
-		nombre: args.nombre,
-	};
-	return await context.prisma.tipoProducto
-		.create({ data })
+async function registrarTipoProducto(parent, args, { prisma }) {
+	return await prisma.tipoProducto
+		.create({ data: { nombre: args.nombre } })
 		.catch((err) => null);
 }
 
-async function modificarTipoProducto(parent, args, context) {
-	const data = {};
-	if (args.nombre) data.nombre = args.nombre;
-	if (args.estado != null) {
-		data.estado = args.estado;
-		if (data.estado == false) {
-			data.productos = {
-				updateMany: {
-					where: {
-						tipoProductoId: parseInt(args.id),
-					},
-					data: { estado: false },
-				},
-			};
-		}
-	}
-	return await context.prisma.tipoProducto
-		.update({
-			where: { id: parseInt(args.id) },
-			data,
-		})
+async function modificarTipoProducto(parent, args, { prisma }) {
+	const data = { nombre: args.nombre, estado: args.estado };
+	return await prisma.tipoProducto
+		.update({ where: { id: parseInt(args.id) }, data })
 		.catch((err) => null);
 }
 
-async function eliminarTipoProducto(parent, args, context) {
-	const numeroProductos = await context.prisma.producto.count({
-		where: { tipoProductoId: parseInt(args.id) },
+async function eliminarTipoProducto(parent, { id }, { prisma }) {
+	const numeroProductos = await prisma.producto.count({
+		where: { tipoProductoId: parseInt(id) },
 	});
 	if (numeroProductos == 0) {
-		return await context.prisma.tipoProducto
-			.delete({ where: { id: parseInt(args.id) } })
+		return await prisma.tipoProducto
+			.delete({ where: { id: parseInt(id) } })
 			.catch((err) => null);
 	} else {
-		return await context.prisma.tipoProducto.update({
-			where: { id: parseInt(args.id) },
-			data: {
-				estado: false,
-				productos: {
-					updateMany: {
-						where: { tipoProductoId: parseInt(args.id) },
-						data: { estado: false },
-					},
-				},
-			},
+		return await prisma.tipoProducto.update({
+			where: { id: parseInt(id) },
+			data: { estado: false },
 		});
 	}
 }
