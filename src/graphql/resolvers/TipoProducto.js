@@ -1,13 +1,18 @@
-async function productos({ id }, args, { prisma }) {
+async function productos({ id }, args, { usuario, prisma }) {
+	const where = {};
+	if (usuario.rol !== 'ADMIN') where.estado = true;
 	return await prisma.tipoProducto.findOne({ where: { id } }).productos({
 		skip: (args.pagina - 1) * args.cantidad || undefined,
 		take: args.cantidad,
+		where,
 	});
 }
 
-async function listarTipoProducto(parent, args, { prisma }) {
+async function listarTipoProducto(parent, args, { usuario, prisma }) {
+	const where = { nombre: { contains: args.filtro } };
+	if (usuario.rol !== 'ADMIN') where.estado = true;
 	return await prisma.tipoProducto.findMany({
-		where: { nombre: { contains: args.filtro } },
+		where,
 		skip: (args.pagina - 1) * args.cantidad || undefined,
 		take: args.cantidad,
 		orderBy: { id: 'asc' },

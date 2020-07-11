@@ -10,9 +10,11 @@ async function personal({ id }, args, { usuario, prisma }) {
 	});
 }
 
-async function listarCargo(parent, args, { prisma }) {
+async function listarCargo(parent, args, { usuario, prisma }) {
+	const where = { nombre: { contains: args.filtro } };
+	if (usuario.rol !== 'ADMIN') where.estado = true;
 	return await prisma.cargo.findMany({
-		where: { nombre: { contains: args.filtro } },
+		where,
 		skip: (args.pagina - 1) * args.cantidad || undefined,
 		take: args.cantidad,
 		orderBy: { id: 'asc' },

@@ -10,8 +10,10 @@ async function pagosPorTipo({ id }, args, { usuario, prisma }) {
 	});
 }
 
-async function listarTipoPago(parent, args, { prisma }) {
-	return await prisma.tipoPago.findMany();
+async function listarTipoPago(parent, args, { usuario, prisma }) {
+	const where = {};
+	if (usuario.rol !== 'ADMIN') where.estado = true;
+	return await prisma.tipoPago.findMany({ where, orderBy: { id: 'asc' } });
 }
 
 async function registrarTipoPago(parent, args, { prisma }) {
