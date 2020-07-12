@@ -4,15 +4,15 @@ type Mesa {
 	ocupado: Boolean!
 	estado: Boolean!
 	pedidoActual: Pedido
-	pedidosRealizados: [Pedido!]!
+	pedidosRealizados(pagina: Int, cantidad: Int): [Pedido!]!
 }
 
 type Query {
-	listarMesa: [Mesa!]!
+	listarMesa(pagina: Int, cantidad: Int): [Mesa!]!
 }
 
 type Mutation {
 	registrarMesa(numero: Int!): Mesa
-	modificarMesa(id: ID!, numero: Int, ocupado: Boolean, estado: Boolean): Mesa
+	modificarMesa(id: ID!, numero: Int, estado: Boolean): Mesa
 	eliminarMesa(id: ID!): Mesa
 }
