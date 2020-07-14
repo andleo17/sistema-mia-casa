@@ -1,65 +1,74 @@
-async function comprasRealizadas(parent, args, context) {
-	return await context.prisma.insumo
-		.findOne({ where: { id: parent.id } })
-		.compra();
+import { AuthenticationError } from 'apollo-server';
+import { CAMPO_NO_ADMIN } from '../../utils/errors';
+
+async function comprasRealizadas({ id }, args, { usuario, prisma }) {
+	if (usuario.rol !== 'ADMIN')
+		throw new AuthenticationError(CAMPO_NO_ADMIN('compras realizadas'));
+	return await prisma.insumo.findOne({ where: { id } }).comprasRealizadas({
+		skip: (args.pagina - 1) * args.cantidad || undefined,
+		take: args.cantidad,
+	});
 }
 
-async function productos(parent, args, context) {
-	return await context.prisma.insumo
-		.findOne({ where: { id: parent.id } })
-		.insumoProducto();
+async function productos({ id }, args, { prisma }) {
+	return await prisma.insumo.findOne({ where: { id } }).productos({
+		skip: (args.pagina - 1) * args.cantidad || undefined,
+		take: args.cantidad,
+	});
 }
 
-async function listarInsumo(parent, args, context) {
-	return await context.prisma.insumo.findMany();
+async function listarInsumo(parent, args, { usuario, prisma }) {
+	const where = { nombre: { contains: args.filtro } };
+	if (usuario.rol !== 'ADMIN') where.estado = true;
+	return await prisma.insumo.findMany({
+		where,
+		skip: (args.pagina - 1) * args.cantidad || undefined,
+		take: args.cantidad,
+		orderBy: { id: 'asc' },
+	});
 }
 
-async function registrarInsumo(parent, args, context) {
-	const data = {
-		nombre: args.nombre,
-		fechaVencimiento: args.fechaVencimiento,
-		cantidad: args.cantidad,
-		unidad: args.unidad,
-		estado: args.estado,
-	};
-	return await context.prisma.insumo.create({ data }).catch((err) => null);
-}
-
-async function modificarInsumo(parent, args, context) {
-	const data = {};
-	if (args.nombre) data.nombre = args.nombre;
-	if (args.fechaVencimiento) data.fechaVencimiento = args.fechaVencimiento;
-	if (args.cantidad) data.cantidad = args.cantidad;
-	if (args.unidad) data.unidad = args.unidad;
-	if (args.estado) data.estado = args.estado;
-	return await context.prisma.insumo
-		.update({
-			where: { id: parseInt(args.id) },
-			data,
+async function registrarInsumo(parent, args, { prisma }) {
+	return await prisma.insumo
+		.create({
+			data: {
+				nombre: args.nombre,
+				fechaVencimiento: args.fechaVencimiento,
+				cantidad: args.cantidad,
+				unidad: args.unidad,
+				estado: args.estado,
+			},
 		})
 		.catch((err) => null);
 }
 
-async function eliminarInsumo(parent, args, context) {
-	const numeroRecetas = await context.prisma.insumoProducto.count({
-		where: { insumoId: parseInt(args.id) },
-	});
-	if (numeroRecetas == 0) {
-		return await context.prisma.insumo
-			.delete({ where: { id: parseInt(args.id) } })
-			.catch((err) => null);
-	} else {
-		return await context.prisma.insumo.update({
+async function modificarInsumo(parent, args, { prisma }) {
+	return await prisma.insumo
+		.update({
 			where: { id: parseInt(args.id) },
 			data: {
-				estado: false,
-				productos: {
-					updateMany: {
-						where: { insumoId: parseInt(args.id) },
-						data: { estado: false },
-					},
-				},
+				nombre: args.nombre,
+				fechaVencimiento: args.fechaVencimiento,
+				cantidad: args.cantidad,
+				unidad: args.unidad,
+				estado: args.estado,
 			},
+		})
+		.catch((err) => null);
+}
+
+async function eliminarInsumo(parent, { id }, { prisma }) {
+	const numeroRecetas = await prisma.insumoProducto.count({
+		where: { insumoId: parseInt(id) },
+	});
+	if (numeroRecetas == 0) {
+		return await prisma.insumo
+			.delete({ where: { id: parseInt(id) } })
+			.catch((err) => null);
+	} else {
+		return await prisma.insumo.update({
+			where: { id: parseInt(id) },
+			data: { estado: false },
 		});
 	}
 }

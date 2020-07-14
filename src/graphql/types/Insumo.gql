@@ -5,12 +5,12 @@ type Insumo {
 	cantidad: Float!
 	unidad: String!
 	estado: Boolean!
-	comprasRealizadas: [DetalleCompra!]!
-	productos: [InsumoProducto!]!
+	comprasRealizadas(pagina: Int, cantidad: Int): [DetalleCompra!]!
+	productos(pagina: Int, cantidad: Int): [InsumoProducto!]!
 }
 
 type Query {
-	listarInsumo: [Insumo!]!
+	listarInsumo(filtro: String, pagina: Int, cantidad: Int): [Insumo!]!
 }
 
 type Mutation {
