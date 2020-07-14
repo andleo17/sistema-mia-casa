@@ -1,37 +1,45 @@
-async function detallePedido(parent, args, context) {
-	return await context.prisma.reclamo
-		.findOne({ where: { id: parent.id } })
-		.detallePedido();
+async function detallePedido({ id }, args, { prisma }) {
+	return await prisma.reclamo.findOne({ where: { id } }).detallePedido();
 }
 
-async function listarReclamo(parent, args, context) {
-	return await context.prisma.reclamo.findMany();
+async function listarReclamo(parent, args, { prisma }) {
+	return await prisma.reclamo.findMany({
+		where: { motivo: { contains: args.filtro } },
+		skip: (args.pagina - 1) * args.cantidad || undefined,
+		take: args.cantidad,
+	});
 }
 
 async function registrarReclamo(parent, args, context) {
-	const data = {
-		motivo: args.motivo,
-		detallePedido: { connect: { id: parseInt(args.detallePedido) } },
-	};
-	return await context.prisma.reclamo.create({ data }).catch((err) => null);
-}
-
-async function modificarReclamo(parent, args, context) {
-	const data = {};
-	if (args.motivo) motivo = args.motivo;
-	if (args.detallePedido)
-		detallePedido = { connect: { id: parseInt(args.detallePedido) } };
 	return await context.prisma.reclamo
-		.update({
-			where: { id: parseInt(args.id) },
-			data,
+		.create({
+			data: {
+				motivo: args.motivo,
+				detallePedido: {
+					connect: { id: parseInt(args.detallePedido) },
+				},
+			},
 		})
 		.catch((err) => null);
 }
 
-async function eliminarReclamo(parent, args, context) {
-	return await context.prisma.reclamo
-		.delete({ where: { id: parseInt(args.id) } })
+async function modificarReclamo(parent, args, { prisma }) {
+	return await prisma.reclamo
+		.update({
+			where: { id: parseInt(args.id) },
+			data: {
+				motivo: args.motivo,
+				detallePedido: {
+					connect: { id: parseInt(args.detallePedido) },
+				},
+			},
+		})
+		.catch((err) => null);
+}
+
+async function eliminarReclamo(parent, { id }, { prisma }) {
+	return await prisma.reclamo
+		.delete({ where: { id: parseInt(id) } })
 		.catch((err) => null);
 }
 

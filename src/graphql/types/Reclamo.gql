@@ -5,7 +5,7 @@ type Reclamo {
 }
 
 type Query {
-	listarReclamo: [Reclamo!]!
+	listarReclamo(filtro: String, pagina: Int, cantidad: Int): [Reclamo!]!
 }
 
 type Mutation {
