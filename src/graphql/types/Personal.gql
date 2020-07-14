@@ -6,11 +6,11 @@ type Personal {
 	estado: Boolean!
 	cargo: Cargo!
 	credencial: Credencial
-	pedidosAtendidos: [Pedido!]!
+	pedidosAtendidos(pagina: Int, cantidad: Int): [Pedido!]!
 }
 
 type Query {
-	listarPersonal: [Personal!]!
+	listarPersonal(filtro: String, pagina: Int, cantidad: Int): [Personal!]!
 }
 
 type Mutation {
