@@ -30,12 +30,12 @@ async function listarMesa(parent, args, { usuario, prisma }) {
 
 async function registrarMesa(parent, args, { prisma }) {
 	return await prisma.mesa
-		.create({ data: { numero: args.numero } })
+		.create({ data: { numero: parseInt(args.numero) } })
 		.catch((err) => null);
 }
 
 async function modificarMesa(parent, args, { prisma }) {
-	const data = { numero: args.numero, estado: args.estado };
+	const data = { numero: parseInt(args.numero), estado: args.estado };
 	return await prisma.mesa
 		.update({ where: { id: parseInt(args.id) }, data })
 		.catch((err) => null);

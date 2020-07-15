@@ -24,8 +24,8 @@ async function registrarProducto(parent, args, context) {
 	const data = {
 		nombre: args.nombre,
 		descripcion: args.descripcion,
-		cantidad: args.cantidad,
-		precio: args.precio,
+		cantidad: parseInt(args.cantidad),
+		precio: parseFloat(args.precio),
 		imagen: args.imagen,
 		estado: args.estado,
 		tipoProducto: { connect: { id: parseInt(args.tipoProducto) } },

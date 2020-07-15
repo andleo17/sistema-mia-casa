@@ -34,7 +34,7 @@ async function registrarInsumo(parent, args, { prisma }) {
 			data: {
 				nombre: args.nombre,
 				fechaVencimiento: args.fechaVencimiento,
-				cantidad: args.cantidad,
+				cantidad: parseFloat(args.cantidad),
 				unidad: args.unidad,
 				estado: args.estado,
 			},
@@ -49,7 +49,7 @@ async function modificarInsumo(parent, args, { prisma }) {
 			data: {
 				nombre: args.nombre,
 				fechaVencimiento: args.fechaVencimiento,
-				cantidad: args.cantidad,
+				cantidad: parseFloat(args.cantidad),
 				unidad: args.unidad,
 				estado: args.estado,
 			},
