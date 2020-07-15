@@ -18,7 +18,7 @@ async function registrarPago(parent, args, context) {
 	const data = {
 		serie: 'sre',
 		numero: 'ff',
-		monto: args.monto,
+		monto: parseFloat(args.monto),
 		tipoPago: { connect: { id: parseInt(args.tipoPago) } },
 		pedido: { connect: { id: parseInt(args.pedido) } },
 	};
