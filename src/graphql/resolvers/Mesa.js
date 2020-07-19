@@ -18,7 +18,7 @@ async function pedidosRealizados({ id }, args, { usuario, prisma }) {
 }
 
 async function listarMesa(parent, args, { usuario, prisma }) {
-	const where = {};
+	const where = { numero: args.filtro };
 	if (usuario.rol !== 'ADMIN') where.estado = true;
 	return await prisma.mesa.findMany({
 		where,

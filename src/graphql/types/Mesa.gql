@@ -8,7 +8,7 @@ type Mesa {
 }
 
 type Query {
-	listarMesa(pagina: Int, cantidad: Int): [Mesa!]!
+	listarMesa(filtro: Int, pagina: Int, cantidad: Int): [Mesa!]!
 }
 
 type Mutation {
