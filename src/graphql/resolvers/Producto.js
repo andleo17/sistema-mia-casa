@@ -1,26 +1,35 @@
-async function tipoProducto(parent, args, context) {
-	return await context.prisma.producto
-		.findOne({ where: { id: parent.id } })
-		.tipoProducto();
+import { AuthenticationError } from 'apollo-server';
+import { NO_ADMIN } from '../../utils/errors';
+
+async function tipoProducto({ id }, args, { prisma }) {
+	return await prisma.producto.findOne({ where: { id } }).tipoProducto();
 }
 
-async function pedidosRealizados(parent, args, context) {
-	return await context.prisma.producto
-		.findOne({ where: { id: parent.id } })
-		.pedidosRealizados();
+async function pedidosRealizados({ id }, args, { usuario, prisma }) {
+	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
+	return await prisma.producto.findOne({ where: { id } }).pedidosRealizados();
 }
 
-async function receta(parent, args, context) {
-	return await context.prisma.producto
-		.findOne({ where: { id: parent.id } })
-		.receta();
+async function receta({ id }, args, { prisma }) {
+	return await prisma.producto.findOne({ where: { id } }).receta({
+		skip: (args.pagina - 1) * args.cantidad || undefined,
+		take: args.cantidad,
+	});
 }
 
-async function listarProducto(parent, args, context) {
-	return await context.prisma.producto.findMany();
+async function listarProducto(parent, args, { usuario, prisma }) {
+	const where = { nombre: { contains: args.filtro } };
+	if (usuario.rol !== 'ADMIN') where.estado = true;
+	return await prisma.producto.findMany({
+		where,
+		skip: (args.pagina - 1) * args.cantidad || undefined,
+		take: args.cantidad,
+		orderBy: { id: 'asc' },
+	});
 }
 
-async function registrarProducto(parent, args, context) {
+async function registrarProducto(parent, args, { usuario, prisma }) {
+	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
 	const data = {
 		nombre: args.nombre,
 		descripcion: args.descripcion,
@@ -32,7 +41,7 @@ async function registrarProducto(parent, args, context) {
 		receta: {
 			create: args.receta.map((i) => {
 				return {
-					cantidad: i.cantidad,
+					cantidad: parseFloat(i.cantidad),
 					unidad: i.unidad,
 					insumo: { connect: { id: parseInt(i.insumo) } },
 				};
@@ -42,20 +51,18 @@ async function registrarProducto(parent, args, context) {
 	return await context.prisma.producto.create({ data }).catch((err) => null);
 }
 
-async function modificarProducto(parent, args, context) {
-	const data = {};
-	if (args.nombre) data.nombre = args.nombre;
-	if (args.descripcion) data.descripcion = args.descripcion;
-	if (args.cantidad) data.cantidad = args.cantidad;
-	if (args.precio) data.precio = args.precio;
-	if (args.imagen) data.imagen = args.imagen;
-	if (args.estado) data.estado = args.estado;
-	if (args.tipoProducto)
-		data.tipoProducto = {
-			connect: { id: parseInt(args.tipoProducto) },
-		};
-	// TODO: Realizar lógica para actualizar
-	return await context.prisma.producto
+async function modificarProducto(parent, args, { usuario, prisma }) {
+	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
+	const data = {
+		nombre: args.nombre,
+		descripcion: args.descripcion,
+		cantidad: parseInt(args.cantidad),
+		precio: parseFloat(args.precio),
+		imagen: args.imagen,
+		estado: args.estado,
+		tipoProducto: { connect: { id: parseInt(args.tipoProducto) } },
+	};
+	return await prisma.producto
 		.update({
 			where: { id: parseInt(args.id) },
 			data,
@@ -63,30 +70,20 @@ async function modificarProducto(parent, args, context) {
 		.catch((err) => null);
 }
 
-async function eliminarProducto(parent, args, context) {
-	const NumeroPedidos = await context.prisma.detallePedido.count({
-		where: { productoId: parseInt(args.id) },
+async function eliminarProducto(parent, { id }, { usuario, prisma }) {
+	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
+	const numeroPedidos = await prisma.detallePedido.count({
+		where: { productoId: parseInt(id) },
 	});
-	if (NumeroPedidos == 0) {
-		await context.prisma.insumoProducto.deleteMany({
-			where: {
-				productoId: parseInt(args.id),
-			},
-		});
-		return await context.prisma.producto
-			.delete({
-				where: {
-					id: parseInt(args.id),
-				},
-			})
+	if (numeroPedidos === 0) {
+		return await prisma.producto
+			.delete({ where: { id: parseInt(id) } })
 			.catch((err) => err);
 	} else {
-		return await context.prisma.producto
+		return await prisma.producto
 			.update({
-				where: { id: parseInt(args.id) },
-				data: {
-					estado: false,
-				},
+				where: { id: parseInt(id) },
+				data: { estado: false },
 			})
 			.catch((err) => null);
 	}

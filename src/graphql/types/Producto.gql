@@ -8,11 +8,11 @@ type Producto {
 	estado: Boolean!
 	tipoProducto: TipoProducto!
 	pedidosRealizados: [DetallePedido!]!
-	receta: [InsumoProducto!]!
+	receta(pagina: Int, cantidad: Int): [InsumoProducto!]!
 }
 
 type Query {
-	listarProducto: [Producto!]!
+	listarProducto(filtro: String, pagina: Int, cantidad: Int): [Producto!]!
 }
 
 type Mutation {
