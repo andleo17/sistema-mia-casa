@@ -1,0 +1,29 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "Compra",
+      "field": "serie",
+      "type": "Int"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Compra",
+      "field": "numero",
+      "type": "Int"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Pago",
+      "field": "serie",
+      "type": "Int"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Pago",
+      "field": "numero",
+      "type": "Int"
+    }
+  ]
+}

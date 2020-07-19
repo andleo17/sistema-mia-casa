@@ -1,18 +1,24 @@
-async function insumos(parent, args, context) {
-	return await context.prisma.compra
-		.findOne({ where: { id: parent.id } })
-		.insumos();
+import { AuthenticationError } from 'apollo-server';
+import { NO_ADMIN } from '../../utils/errors';
+
+async function insumos({ id }, args, { prisma }) {
+	return await prisma.compra.findOne({ where: { id } }).insumos();
 }
 
-async function listarCompra(parent, args, context) {
-	return await context.prisma.compra.findMany();
+async function listarCompra(parent, args, { usuario, prisma }) {
+	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
+	return await prisma.compra.findMany({
+		skip: (args.pagina - 1) * args.cantidad || undefined,
+		take: args.cantidad,
+	});
 }
 
-async function registrarCompra(parent, args, context) {
+async function registrarCompra(parent, args, { usuario, prisma }) {
+	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
 	const data = {
-		serie: args.serie,
-		numero: args.numero,
-		precio: args.precio,
+		serie: parseInt(args.serie),
+		numero: parseInt(args.numero),
+		precio: parseFloat(args.precio),
 		fecha: args.fecha,
 		insumos: {
 			create: args.insumos.map((i) => {
@@ -27,40 +33,23 @@ async function registrarCompra(parent, args, context) {
 			}),
 		},
 	};
-	return await context.prisma.compra.create({ data }).catch((err) => null);
+	return await prisma.compra.create({ data }).catch((err) => null);
 }
 
-async function modificarCompra(parent, args, context) {
-	const data = {};
-	if (args.serie) serie = args.serie;
-	if (args.numero) numero = args.numero;
-	if (args.precio) precio = args.precio;
-	if (args.fecha) fecha = args.fecha;
-	// TODO: Realizar lógica para actualizar insumos de una compra
-	// if (args.insumos)
-	// 	insumos = {
-	// 		upsert: args.insumos.map((i) => {
-	// 			return {
-	// 				importe: parseFloat(i.importe),
-	// 				cantidad: parseFloat(i.cantidad),
-	// 				unidad: i.unidad,
-	// 				insumo: {
-	// 					connect: { id: parseInt(i.insumo) },
-	// 				},
-	// 			};
-	// 		}),
-	// 	};
+async function modificarCompra(parent, args, { usuario, prisma }) {
+	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
+	const data = {
+		serie: parseInt(args.serie),
+		numero: parseInt(args.numero),
+		precio: parseFloat(args.precio),
+		fecha: args.fecha,
+	};
 	return await context.prisma.compra
 		.update({
 			where: { id: parseInt(args.id) },
 			data,
 		})
 		.catch((err) => null);
-}
-
-async function eliminarCompra(parent, args, context) {
-	return null;
-	// TODO: Se puede eliminar una compra?
 }
 
 export const Compra = {
@@ -74,5 +63,4 @@ export const Query = {
 export const Mutation = {
 	registrarCompra,
 	modificarCompra,
-	eliminarCompra,
 };
