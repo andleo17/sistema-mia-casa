@@ -47,9 +47,13 @@ async function login(parent, args, context) {
 
 async function usuarioActual(parent, args, context) {
 	const { id } = context.usuario;
-	return await context.prisma.credencial
-		.findOne({ where: { id } })
-		.personal();
+	if (id) {
+		return await context.prisma.credencial
+			.findOne({ where: { id } })
+			.personal();
+	} else {
+		return null;
+	}
 }
 
 async function registrarCredencial(parent, args, context) {
