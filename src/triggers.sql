@@ -19,7 +19,7 @@ LANGUAGE 'plpgsql';
 CREATE OR REPLACE FUNCTION fn_tg_registrar_pedido() RETURNS TRIGGER AS
 $$
 BEGIN
-	UPDATE "Mesa" SET ocupado = TRUE WHERE id = new.mesaId;
+	UPDATE "Mesa" SET "ocupado" = TRUE WHERE "id" = NEW."mesaId";
 	RETURN NEW;
 END;
 $$
@@ -28,7 +28,8 @@ LANGUAGE 'plpgsql';
 CREATE OR REPLACE FUNCTION fn_tg_registrar_detalle_pedido() RETURNS TRIGGER AS
 $$
 BEGIN
-	UPDATE "Producto" SET cantidad = cantidad - new.cantidad WHERE id = new.productoId;
+	UPDATE "Producto" SET "cantidad" = "cantidad" - NEW."cantidad" WHERE "id" = NEW."productoId";
+	UPDATE "Pedido" SET "monto" = "monto" + (NEW."precio" * NEW."cantidad") WHERE "id" = NEW."pedidoId";
 	RETURN NEW;
 END;
 $$

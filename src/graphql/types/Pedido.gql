@@ -2,6 +2,7 @@ type Pedido {
 	id: ID!
 	fecha: DateTime!
 	estado: Boolean!
+	monto: Float!
 	pago: Pago!
 	personal: Personal!
 	mesa: Mesa!
@@ -9,16 +10,11 @@ type Pedido {
 }
 
 type Query {
-	listarPedido: [Pedido!]!
+	listarPedido(pagina: Int, cantidad: Int): [Pedido!]!
 }
 
 type Mutation {
 	registrarPedido(mesa: ID!, productos: [DetallePedidoInput!]!): Pedido
-	modificarPedido(
-		id: ID!
-		productos: [DetallePedidoInput!]!
-		estado: Boolean
-		mesa: ID
-	): Pedido
+	modificarPedido(id: ID!, estado: Boolean): Pedido
 	eliminarPedido(id: ID!): Pedido
 }
