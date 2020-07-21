@@ -36,7 +36,6 @@ async function registrarProducto(parent, args, { usuario, prisma }) {
 		cantidad: parseInt(args.cantidad),
 		precio: parseFloat(args.precio),
 		imagen: args.imagen,
-		estado: args.estado,
 		tipoProducto: { connect: { id: parseInt(args.tipoProducto) } },
 		receta: {
 			create: args.receta.map((i) => {
@@ -48,7 +47,7 @@ async function registrarProducto(parent, args, { usuario, prisma }) {
 			}),
 		},
 	};
-	return await context.prisma.producto.create({ data }).catch((err) => null);
+	return await prisma.producto.create({ data }).catch((err) => null);
 }
 
 async function modificarProducto(parent, args, { usuario, prisma }) {
