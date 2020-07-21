@@ -1,67 +1,48 @@
-async function tipoPago(parent, args, context) {
-	return await context.prisma.pago
-		.findOne({ where: { id: parent.id } })
-		.tipoPago();
+import { AuthenticationError } from 'apollo-server';
+import { NO_ADMIN } from '../../utils/errors';
+
+async function tipoPago(parent, { id }, { prisma }) {
+	return await prisma.pago.findOne({ where: { id } }).tipoPago();
 }
 
-async function pedido(parent, args, context) {
-	return await context.prisma.pago
-		.findOne({ where: { id: parent.id } })
-		.pedido();
+async function pedido(parent, { id }, { prisma }) {
+	return await prisma.pago.findOne({ where: { id } }).pedido();
 }
 
-async function listarPago(parent, args, context) {
-	return await context.prisma.pago.findMany();
+async function listarPago(parent, args, { usuario, prisma }) {
+	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
+	return await prisma.pago.findMany({
+		skip: (args.pagina - 1) * args.cantidad || undefined,
+		take: args.cantidad,
+	});
 }
 
-async function registrarPago(parent, args, context) {
+async function registrarPago(parent, args, { prisma }) {
+	let serie = await prisma.queryRaw(`SELECT MAX("serie") FROM "Pago";`);
+	serie = serie[0].max;
+	let numero = await prisma.queryRaw(
+		`SELECT MAX("numero") + 1 FROM "Pago" WHERE "serie" = ${serie};`
+	);
+	numero = numero[0].max;
+
+	if (numero === 1000000) {
+		serie++;
+		numero = 1;
+	}
+
 	const data = {
-		serie: 'sre',
-		numero: 'ff',
+		serie,
+		numero,
 		monto: parseFloat(args.monto),
 		tipoPago: { connect: { id: parseInt(args.tipoPago) } },
 		pedido: { connect: { id: parseInt(args.pedido) } },
 	};
-	await context.prisma.pedido
-		.update({
-			where: { id: parseInt(args.pedido) },
-			data: { estado: false },
-		})
-		.catch((err) => null);
-	const pedido = await context.prisma.pedido.findOne({
-		where: { id: parseInt(args.pedido) },
-	});
-	const mesa = pedido.mesaId;
-	await context.prisma.mesa
-		.update({
-			where: { id: mesa },
-			data: { ocupado: false },
-		})
-		.catch((err) => err);
 	return await context.prisma.pago.create({ data }).catch((err) => err);
 }
 
-async function eliminarPago(parent, args, context) {
-	const pago = await context.prisma.pago.findOne({
-		where: { id: parseInt(args.id) },
-	});
-	await context.prisma.pedido
-		.update({
-			where: { id: pago.pedidoId },
-			data: { estado: true },
-		})
-		.catch((err) => null);
-	const pedido = await context.prisma.pedido.findOne({
-		where: { id: pago.pedidoId },
-	});
-	await context.prisma.mesa
-		.update({
-			where: { id: pedido.mesaId },
-			data: { ocupado: true },
-		})
-		.catch((err) => err);
-	return await context.prisma.pago
-		.delete({ where: { id: parseInt(args.id) } })
+async function eliminarPago(parent, { id }, { prisma }) {
+	return await prisma.pago
+		.delete({ where: { id: parseInt(id) } })
 		.catch((err) => null);
 }
 

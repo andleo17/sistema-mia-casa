@@ -1,7 +1,7 @@
 type Pago {
 	id: ID!
-	serie: String!
-	numero: String!
+	serie: Int!
+	numero: Int!
 	fecha: DateTime!
 	monto: Float!
 	tipoPago: TipoPago!
@@ -9,7 +9,7 @@ type Pago {
 }
 
 type Query {
-	listarPago: [Pago!]!
+	listarPago(pagina: Int, cantidad: Int): [Pago!]!
 }
 
 type Mutation {

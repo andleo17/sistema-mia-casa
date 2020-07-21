@@ -16,6 +16,32 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
+CREATE OR REPLACE FUNCTION fn_tg_registrar_pago() RETURNS TRIGGER AS
+$$
+DECLARE
+	mesaId INT;
+BEGIN
+	SELECT "mesaId" INTO mesaId FROM "Pedido" WHERE "id" = NEW."pedidoId";
+	UPDATE "Pedido" SET "estado" = FALSE WHERE "id" = NEW."pedidoId";
+	UPDATE "Mesa" SET "ocupado" = FALSE WHERE "id" = mesaId;
+	RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION fn_tg_eliminar_pago() RETURNS TRIGGER AS
+$$
+DECLARE
+	mesaId INT;
+BEGIN
+	SELECT "mesaId" INTO mesaId FROM "Pedido" WHERE "id" = OLD."pedidoId";
+	UPDATE "Pedido" SET "estado" = FALSE WHERE "id" = OLD."pedidoId";
+	UPDATE "Mesa" SET "ocupado" = FALSE WHERE "id" = mesaId;
+	RETURN OLD;
+END;
+$$
+LANGUAGE 'plpgsql';
+
 CREATE OR REPLACE FUNCTION fn_tg_registrar_pedido() RETURNS TRIGGER AS
 $$
 BEGIN
@@ -84,6 +110,8 @@ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER tg_dar_baja_cargo BEFORE UPDATE ON "Cargo" FOR EACH ROW WHEN (NEW."estado" = FALSE) EXECUTE PROCEDURE fn_tg_dar_baja_cargo();
 CREATE TRIGGER tg_dar_baja_personal BEFORE UPDATE ON "Personal" FOR EACH ROW WHEN (NEW."estado" = FALSE) EXECUTE PROCEDURE fn_tg_dar_baja_personal();
+CREATE TRIGGER tg_registrar_pago AFTER INSERT ON "Pago" FOR EACH ROW EXECUTE PROCEDURE fn_tg_registrar_pago();
+CREATE TRIGGER tg_eliminar_pago AFTER DELETE ON "Pago" FOR EACH ROW EXECUTE PROCEDURE fn_tg_eliminar_pago();
 CREATE TRIGGER tg_registrar_pedido AFTER INSERT ON "Pedido" FOR EACH ROW EXECUTE PROCEDURE fn_tg_registrar_pedido();
 CREATE TRIGGER tg_registrar_detalle_pedido AFTER INSERT ON "DetallePedido" FOR EACH ROW EXECUTE PROCEDURE fn_tg_registrar_detalle_pedido();
 CREATE TRIGGER tg_registrar_insumo_producto AFTER INSERT ON "InsumoProducto" FOR EACH ROW EXECUTE PROCEDURE fn_tg_registrar_insumo_producto();
