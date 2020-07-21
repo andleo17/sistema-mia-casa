@@ -1,4 +1,4 @@
-import { PubSub } from 'apollo-server';
+import { PubSub, withFilter } from 'apollo-server';
 import { MESA_OCUPADA } from '../../utils/errors';
 const pubsub = new PubSub();
 
@@ -31,11 +31,11 @@ async function listarPedido(parent, args, { usuario, prisma }) {
 }
 
 async function registrarPedido(parent, args, { usuario, prisma }) {
-	const mesaOcupada = await prisma.mesa.findOne({
+	const mesa = await prisma.mesa.findOne({
 		where: { id: parseInt(args.mesa) },
 		select: { ocupado: true },
 	});
-	if (!ocupado) {
+	if (!mesa.ocupado) {
 		const data = {
 			personal: { connect: { id: usuario.id } },
 			mesa: { connect: { id: parseInt(args.mesa) } },
@@ -93,6 +93,13 @@ export const Mutation = {
 
 export const Subscription = {
 	pedidoAgregado: {
-		subscribe: () => pubsub.asyncIterator([PEDIDO_AGREGADO]),
+		subscribe: withFilter(
+			() => pubsub.asyncIterator([PEDIDO_AGREGADO]),
+			(payload, variables) => {
+				return (
+					payload.pedidoAgregado.mesaId === parseInt(variables.mesaId)
+				);
+			}
+		),
 	},
 };
