@@ -10,13 +10,18 @@ async function listarReclamo(parent, args, { prisma }) {
 	});
 }
 
-async function registrarReclamo(parent, args, context) {
-	return await context.prisma.reclamo
+async function registrarReclamo(parent, args, { prisma }) {
+	return await prisma.reclamo
 		.create({
 			data: {
 				motivo: args.motivo,
 				detallePedido: {
-					connect: { id: parseInt(args.detallePedido) },
+					connect: {
+						pedidoId_productoId: {
+							pedidoId: parseInt(args.pedido),
+							productoId: parseInt(args.producto),
+						},
+					},
 				},
 			},
 		})
@@ -29,9 +34,6 @@ async function modificarReclamo(parent, args, { prisma }) {
 			where: { id: parseInt(args.id) },
 			data: {
 				motivo: args.motivo,
-				detallePedido: {
-					connect: { id: parseInt(args.detallePedido) },
-				},
 			},
 		})
 		.catch((err) => null);
