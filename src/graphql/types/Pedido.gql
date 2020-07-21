@@ -18,3 +18,7 @@ type Mutation {
 	modificarPedido(id: ID!, estado: Boolean): Pedido
 	eliminarPedido(id: ID!): Pedido
 }
+
+type Subscription {
+	pedidoAgregado: Pedido!
+}

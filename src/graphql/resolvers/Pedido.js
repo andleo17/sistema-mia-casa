@@ -1,3 +1,9 @@
+import { PubSub } from 'apollo-server';
+import { MESA_OCUPADA } from '../../utils/errors';
+const pubsub = new PubSub();
+
+const PEDIDO_AGREGADO = 'PEDIDO_AGREGADO';
+
 async function pago({ id }, args, { prisma }) {
 	return await prisma.pedido.findOne({ where: { id } }).pago();
 }
@@ -25,21 +31,32 @@ async function listarPedido(parent, args, { usuario, prisma }) {
 }
 
 async function registrarPedido(parent, args, { usuario, prisma }) {
-	const data = {
-		personal: { connect: { id: usuario.id } },
-		mesa: { connect: { id: parseInt(args.mesa) } },
-		productos: {
-			create: args.productos.map((i) => {
-				return {
-					producto: { connect: { id: parseInt(i.producto) } },
-					precio: parseFloat(i.precio),
-					cantidad: parseInt(i.cantidad),
-				};
-			}),
-		},
-	};
-
-	return await prisma.pedido.create({ data }).catch((err) => null);
+	const mesaOcupada = await prisma.mesa.findOne({
+		where: { id: parseInt(args.mesa) },
+		select: { ocupado: true },
+	});
+	if (!ocupado) {
+		const data = {
+			personal: { connect: { id: usuario.id } },
+			mesa: { connect: { id: parseInt(args.mesa) } },
+			productos: {
+				create: args.productos.map((i) => {
+					return {
+						producto: { connect: { id: parseInt(i.producto) } },
+						precio: parseFloat(i.precio),
+						cantidad: parseInt(i.cantidad),
+					};
+				}),
+			},
+		};
+		const pedidoAgregado = await prisma.pedido
+			.create({ data })
+			.catch((err) => null);
+		pubsub.publish(PEDIDO_AGREGADO, { pedidoAgregado });
+		return pedidoAgregado;
+	} else {
+		throw new Error(MESA_OCUPADA);
+	}
 }
 
 async function modificarPedido(parent, args, { prisma }) {
@@ -52,16 +69,9 @@ async function modificarPedido(parent, args, { prisma }) {
 }
 
 async function eliminarPedido(parent, { id }, { prisma }) {
-	const numeroPagos = await prisma.pago.count({
-		where: { pedidoId: parseInt(id) },
-	});
-	if (numeroPagos === 0) {
-		return await prisma.pedido
-			.delete({ where: { id: parseInt(id) } })
-			.catch((err) => null);
-	} else {
-		return null;
-	}
+	return await prisma.pedido
+		.delete({ where: { id: parseInt(id) } })
+		.catch((err) => null);
 }
 
 export const Pedido = {
@@ -79,4 +89,10 @@ export const Mutation = {
 	registrarPedido,
 	modificarPedido,
 	eliminarPedido,
+};
+
+export const Subscription = {
+	pedidoAgregado: {
+		subscribe: () => pubsub.asyncIterator([PEDIDO_AGREGADO]),
+	},
 };

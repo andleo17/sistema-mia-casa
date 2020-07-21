@@ -4,8 +4,7 @@ import { AuthenticationError } from 'apollo-server';
 
 export const APP_SECRET = 'sistema-mia-casa';
 
-export function obtenerUsuario({ req }) {
-	const authorization = req.get('Authorization');
+export function obtenerUsuario(authorization) {
 	if (authorization) {
 		const token = authorization.replace('Bearer ', '');
 		const { id, rol, cliente } = verify(token, APP_SECRET);

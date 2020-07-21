@@ -10,8 +10,10 @@ const server = new ApolloServer({
 	typeDefs,
 	resolvers,
 	context: (request) => {
-		const usuario = obtenerUsuario(request);
-		return { usuario, prisma };
+		if (request.req) {
+			const usuario = obtenerUsuario(request.req.get('Authorization'));
+			return { usuario, prisma };
+		}
 	},
 });
 

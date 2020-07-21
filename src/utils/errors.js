@@ -9,3 +9,5 @@ export function NO_ENCONTRADO(tabla) {
 export function CAMPO_NO_ADMIN(campo) {
 	return `No se puede acceder al campo ${campo} porque no es administrador.`;
 }
+export const MESA_OCUPADA =
+	'Mesa ocupada, no se puede registrar un nuevo pedido';
