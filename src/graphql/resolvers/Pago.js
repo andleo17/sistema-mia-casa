@@ -1,11 +1,11 @@
 import { AuthenticationError } from 'apollo-server';
 import { NO_ADMIN } from '../../utils/errors';
 
-async function tipoPago(parent, { id }, { prisma }) {
+async function tipoPago({ id }, args, { prisma }) {
 	return await prisma.pago.findOne({ where: { id } }).tipoPago();
 }
 
-async function pedido(parent, { id }, { prisma }) {
+async function pedido({ id }, args, { prisma }) {
 	return await prisma.pago.findOne({ where: { id } }).pedido();
 }
 
@@ -18,12 +18,14 @@ async function listarPago(parent, args, { usuario, prisma }) {
 }
 
 async function registrarPago(parent, args, { prisma }) {
-	let serie = await prisma.queryRaw(`SELECT MAX("serie") FROM "Pago";`);
-	serie = serie[0].max || 1;
-	let numero = await prisma.queryRaw(
-		`SELECT MAX("numero") + 1 FROM "Pago" WHERE "serie" = ${serie};`
+	let serie = await prisma.queryRaw(
+		`SELECT MAX("serie") AS "serie" FROM "Pago";`
 	);
-	numero = numero[0].max || 1;
+	serie = serie[0].serie || 1;
+	let numero = await prisma.queryRaw(
+		`SELECT MAX("numero") + 1 AS "numero" FROM "Pago" WHERE "serie" = ${serie};`
+	);
+	numero = numero[0].numero || 1;
 
 	if (numero === 1000000) {
 		serie++;
