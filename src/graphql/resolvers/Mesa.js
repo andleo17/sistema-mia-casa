@@ -64,7 +64,7 @@ async function eliminarMesa(parent, { id }, { prisma }) {
 	}
 }
 
-//Resolvers
+//Especificación de resolvers
 
 export const Mesa = {
 	pedidoActual,

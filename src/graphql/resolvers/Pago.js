@@ -1,14 +1,18 @@
+//Importaciones de nombres de estapcio
 import { AuthenticationError } from 'apollo-server';
 import { NO_ADMIN } from '../../utils/errors';
 
+//Lista los tipos de pagos aceptados por el restaurante
 async function tipoPago({ id }, args, { prisma }) {
 	return await prisma.pago.findOne({ where: { id } }).tipoPago();
 }
 
+//Lista el pago de un pedido
 async function pedido({ id }, args, { prisma }) {
 	return await prisma.pago.findOne({ where: { id } }).pedido();
 }
 
+//Lista todos los pagos, corroborando que el usuario que ha iniciado sesión tenga rol ADMIN
 async function listarPago(parent, args, { usuario, prisma }) {
 	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
 	return await prisma.pago.findMany({
@@ -17,6 +21,7 @@ async function listarPago(parent, args, { usuario, prisma }) {
 	});
 }
 
+//Registra el pago de un pedido, generando automaticamente la serie y el número del mismo
 async function registrarPago(parent, args, { prisma }) {
 	let serie = await prisma.queryRaw(
 		`SELECT MAX("serie") AS "serie" FROM "Pago";`
@@ -42,12 +47,14 @@ async function registrarPago(parent, args, { prisma }) {
 	return await prisma.pago.create({ data }).catch((err) => err);
 }
 
+//Elimna un pago
 async function eliminarPago(parent, { id }, { prisma }) {
 	return await prisma.pago
 		.delete({ where: { id: parseInt(id) } })
 		.catch((err) => null);
 }
 
+//Especificación de resolvers
 export const Pago = {
 	tipoPago,
 	pedido,
