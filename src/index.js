@@ -9,11 +9,19 @@ const prisma = new PrismaClient();
 const server = new ApolloServer({
 	typeDefs,
 	resolvers,
-	context: (request) => {
-		if (request.req) {
-			const usuario = obtenerUsuario(request.req.get('Authorization'));
+	context: ({ req, connection }) => {
+		if (req) {
+			const usuario = obtenerUsuario(req.get('Authorization'));
 			return { usuario, prisma };
+		} else {
+			return connection.context;
 		}
+	},
+	subscriptions: {
+		onConnect: (connectionParams, webSocket) => {
+			const usuario = obtenerUsuario(connectionParams.Authorization);
+			return { usuario, prisma };
+		},
 	},
 });
 
