@@ -1,15 +1,19 @@
+//Importación de nombres de espacio
 import { AuthenticationError } from 'apollo-server';
 import { NO_ADMIN } from '../../utils/errors';
 
+//Devuelve el tipo de producto de un producto
 async function tipoProducto({ id }, args, { prisma }) {
 	return await prisma.producto.findOne({ where: { id } }).tipoProducto();
 }
 
+//Devuelve los productos de un pedido
 async function pedidosRealizados({ id }, args, { usuario, prisma }) {
 	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
 	return await prisma.producto.findOne({ where: { id } }).pedidosRealizados();
 }
 
+//Devuelve la lista de insumos de un producto
 async function receta({ id }, args, { prisma }) {
 	return await prisma.producto.findOne({ where: { id } }).receta({
 		skip: (args.pagina - 1) * args.cantidad || undefined,
@@ -17,6 +21,7 @@ async function receta({ id }, args, { prisma }) {
 	});
 }
 
+//Devuelva una lista de productos
 async function listarProducto(parent, args, { usuario, prisma }) {
 	const where = { nombre: { contains: args.filtro } };
 	if (usuario.rol !== 'ADMIN') where.estado = true;
@@ -28,6 +33,7 @@ async function listarProducto(parent, args, { usuario, prisma }) {
 	});
 }
 
+//Permite registra un producto
 async function registrarProducto(parent, args, { usuario, prisma }) {
 	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
 	const data = {
@@ -51,6 +57,7 @@ async function registrarProducto(parent, args, { usuario, prisma }) {
 	return await prisma.producto.create({ data }).catch((err) => null);
 }
 
+//Permite modificar un producto y sus insumos
 async function modificarProducto(parent, args, { usuario, prisma }) {
 	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
 	const data = {}
@@ -70,6 +77,7 @@ async function modificarProducto(parent, args, { usuario, prisma }) {
 		.catch((err) => null);
 }
 
+//Elimina un producto y sus insumos
 async function eliminarProducto(parent, { id }, { usuario, prisma }) {
 	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
 	const numeroPedidos = await prisma.detallePedido.count({
@@ -93,6 +101,7 @@ async function eliminarProducto(parent, { id }, { usuario, prisma }) {
 	}
 }
 
+//Especificación de resolvers
 export const Producto = {
 	tipoProducto,
 	pedidosRealizados,

@@ -1,3 +1,4 @@
+//Devuelve el pedido de un detalle de pedido
 async function pedido(parent, args, context) {
 	return await context.prisma.detallePedido
 		.findOne({
@@ -11,6 +12,7 @@ async function pedido(parent, args, context) {
 		.pedido();
 }
 
+//Devuelve el producto de un pedido
 async function producto(parent, args, context) {
 	return await context.prisma.detallePedido
 		.findOne({
@@ -24,6 +26,7 @@ async function producto(parent, args, context) {
 		.producto();
 }
 
+//Devuelve los reclamos de un pedido
 async function reclamos(parent, args, context) {
 	return await context.prisma.detallePedido
 		.findOne({
@@ -37,6 +40,7 @@ async function reclamos(parent, args, context) {
 		.reclamos();
 }
 
+//Especificación de resolvers
 export const DetallePedido = {
 	pedido,
 	producto,

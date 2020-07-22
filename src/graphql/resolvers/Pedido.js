@@ -1,25 +1,32 @@
+//Importaciones de nombres de espacio
 import { PubSub, withFilter } from 'apollo-server';
 import { MESA_OCUPADA } from '../../utils/errors';
 const pubsub = new PubSub();
 
+//Declaración de tipo de error
 const PEDIDO_AGREGADO = 'PEDIDO_AGREGADO';
 
+//Devuelve el pago de un pedido, la búsqueda es por id
 async function pago({ id }, args, { prisma }) {
 	return await prisma.pedido.findOne({ where: { id } }).pago();
 }
 
+//Devuelve al empleado que ha atendo el pedido.
 async function personal({ id }, args, { prisma }) {
 	return await prisma.pedido.findOne({ where: { id } }).personal();
 }
 
+//Devuelve la mesa donde se realizó el pedido
 async function mesa({ id }, args, { prisma }) {
 	return await prisma.pedido.findOne({ where: { id } }).mesa();
 }
 
+//Devuelve el producto de un pedido
 async function productos({ id }, args, { prisma }) {
 	return await prisma.pedido.findOne({ where: { id } }).productos();
 }
 
+//Lista todos lo pedidos
 async function listarPedido(parent, args, { usuario, prisma }) {
 	const where = {};
 	if (usuario.rol !== 'ADMIN') where.estado = true;
@@ -30,6 +37,7 @@ async function listarPedido(parent, args, { usuario, prisma }) {
 	});
 }
 
+//Registra un pedido, validando que el estado de la mesa sea desocupado
 async function registrarPedido(parent, args, { usuario, prisma }) {
 	const mesa = await prisma.mesa.findOne({
 		where: { id: parseInt(args.mesa) },
@@ -59,6 +67,7 @@ async function registrarPedido(parent, args, { usuario, prisma }) {
 	}
 }
 
+//Modifica el estado de un pedido
 async function modificarPedido(parent, args, { prisma }) {
 	return await prisma.pedido
 		.update({
@@ -68,12 +77,14 @@ async function modificarPedido(parent, args, { prisma }) {
 		.catch((err) => null);
 }
 
+//Elimna un pedido, reuiqere del id del pedido
 async function eliminarPedido(parent, { id }, { prisma }) {
 	return await prisma.pedido
 		.delete({ where: { id: parseInt(id) } })
 		.catch((err) => null);
 }
 
+//Especificación de resolvers
 export const Pedido = {
 	pago,
 	personal,
@@ -91,6 +102,7 @@ export const Mutation = {
 	eliminarPedido,
 };
 
+//Subscripción para datos en tiempo real
 export const Subscription = {
 	pedidoAgregado: {
 		subscribe: withFilter(
