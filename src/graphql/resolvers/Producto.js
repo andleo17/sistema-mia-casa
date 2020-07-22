@@ -76,6 +76,10 @@ async function eliminarProducto(parent, { id }, { usuario, prisma }) {
 		where: { productoId: parseInt(id) },
 	});
 	if (numeroPedidos === 0) {
+		await prisma.insumoProducto
+			.deleteMany({ where: { productoId: parseInt(id) }})
+			.catch((err) => err);
+
 		return await prisma.producto
 			.delete({ where: { id: parseInt(id) } })
 			.catch((err) => err);
