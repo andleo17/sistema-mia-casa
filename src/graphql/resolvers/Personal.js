@@ -18,8 +18,13 @@ async function pedidosAtendidos({ id }, args, { prisma }) {
 
 async function listarPersonal(parent, args, { usuario, prisma }) {
 	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
-	return await context.prisma.personal.findMany({
-		where: { nombre: { contains: args.filtro } },
+	return await prisma.personal.findMany({
+		where: {
+			OR: [
+				{ nombres: { contains: args.filtro } },
+				{ apellidos: { contains: args.filtro } },
+			],
+		},
 		skip: (args.pagina - 1) * args.cantidad || undefined,
 		take: args.cantidad,
 	});
@@ -35,7 +40,7 @@ async function registrarPersonal(parent, args, { prisma }) {
 				cargo: { connect: { id: parseInt(args.cargo) } },
 			},
 		})
-		.catch((err) => null);
+		.catch((err) => err);
 }
 
 async function modificarPersonal(parent, args, { prisma }) {

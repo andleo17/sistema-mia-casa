@@ -59,7 +59,7 @@ async function usuarioActual(parent, args, context) {
 async function registrarCredencial(parent, args, context) {
 	const { rol } = context.usuario;
 	if (rol === 'ADMIN') {
-		const clave = await hash(args.password, 10);
+		const clave = await hash(args.clave, 10);
 		const data = {
 			...args,
 			clave,
@@ -67,7 +67,7 @@ async function registrarCredencial(parent, args, context) {
 		};
 		return await context.prisma.credencial
 			.create({ data })
-			.catch((err) => null);
+			.catch((err) => err);
 	} else {
 		throw new Error(NO_ADMIN);
 	}

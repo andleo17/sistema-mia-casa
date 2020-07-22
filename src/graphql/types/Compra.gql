@@ -1,7 +1,7 @@
 type Compra {
 	id: ID!
-	serie: String!
-	numero: String!
+	serie: Int!
+	numero: Int!
 	precio: Float!
 	fecha: DateTime!
 	insumos: [DetalleCompra!]!
@@ -13,17 +13,17 @@ type Query {
 
 type Mutation {
 	registrarCompra(
-		serie: String!
-		numero: String!
+		serie: Int!
+		numero: Int!
 		precio: Float!
-		fecha: String!
+		fecha: DateTime
 		insumos: [DetalleCompraInput!]!
 	): Compra
 	modificarCompra(
 		id: ID!
-		serie: String!
-		numero: String!
+		serie: Int!
+		numero: Int!
 		precio: Float!
-		fecha: String!
+		fecha: DateTime
 	): Compra
 }
