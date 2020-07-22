@@ -19,11 +19,11 @@ async function listarPago(parent, args, { usuario, prisma }) {
 
 async function registrarPago(parent, args, { prisma }) {
 	let serie = await prisma.queryRaw(`SELECT MAX("serie") FROM "Pago";`);
-	serie = serie[0].max;
+	serie = serie[0].max || 1;
 	let numero = await prisma.queryRaw(
 		`SELECT MAX("numero") + 1 FROM "Pago" WHERE "serie" = ${serie};`
 	);
-	numero = numero[0].max;
+	numero = numero[0].max || 1;
 
 	if (numero === 1000000) {
 		serie++;
@@ -37,7 +37,7 @@ async function registrarPago(parent, args, { prisma }) {
 		tipoPago: { connect: { id: parseInt(args.tipoPago) } },
 		pedido: { connect: { id: parseInt(args.pedido) } },
 	};
-	return await context.prisma.pago.create({ data }).catch((err) => err);
+	return await prisma.pago.create({ data }).catch((err) => err);
 }
 
 async function eliminarPago(parent, { id }, { prisma }) {
