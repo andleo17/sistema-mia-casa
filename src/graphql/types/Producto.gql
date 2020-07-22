@@ -32,6 +32,7 @@ type Mutation {
 		cantidad: Int
 		precio: Float
 		imagen: String
+		estado: Boolean
 		tipoProducto: ID
 		receta: [InsumoProductoInput!]
 	): Producto

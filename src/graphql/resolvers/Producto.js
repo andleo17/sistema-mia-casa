@@ -53,15 +53,15 @@ async function registrarProducto(parent, args, { usuario, prisma }) {
 
 async function modificarProducto(parent, args, { usuario, prisma }) {
 	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
-	const data = {
-		nombre: args.nombre,
-		descripcion: args.descripcion,
-		cantidad: parseInt(args.cantidad),
-		precio: parseFloat(args.precio),
-		imagen: args.imagen,
-		estado: args.estado,
-		tipoProducto: { connect: { id: parseInt(args.tipoProducto) } },
-	};
+	const data = {}
+		if(args.nombre) data.nombre = args.nombre;
+		if(args.descripcion) data.descripcion = args.descripcion;
+		if(args.cantidad) data.cantidad = parseInt(args.cantidad);
+		if(args.precio) data.precio = parseFloat(args.precio);
+		if(args.imagen) data.imagen = args.imagen;
+		if(args.estado != null) data.estado = args.estado;
+		if(args.tipoProducto) data.tipoProducto = { connect: { id: parseInt(args.tipoProducto) } };
+
 	return await prisma.producto
 		.update({
 			where: { id: parseInt(args.id) },
