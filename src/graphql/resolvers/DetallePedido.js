@@ -26,7 +26,14 @@ async function producto(parent, args, context) {
 
 async function reclamos(parent, args, context) {
 	return await context.prisma.detallePedido
-		.findOne({ where: { id: parent.id } })
+		.findOne({
+			where: {
+				pedidoId_productoId: {
+					pedidoId: parent.pedidoId,
+					productoId: parent.productoId,
+				},
+			},
+		})
 		.reclamos();
 }
 
