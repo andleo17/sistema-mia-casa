@@ -11,3 +11,4 @@
 20200719001918-cambiado-a-int-el-tipo-de-datos-de-las-series-y-numeros
 20200721110458-agregando-monto-a-pedido
 20200721181459-agregando-restricción-de-unique-a-reclamo
+20200721223225-agregando-fecha-default-a-compra
