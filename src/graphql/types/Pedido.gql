@@ -4,14 +4,14 @@ type Pedido {
 	estado: Boolean!
 	monto: Float!
 	mesaId: Int!
-	pago: Pago!
+	pago: Pago
 	personal: Personal!
 	mesa: Mesa!
 	productos: [DetallePedido!]!
 }
 
 type Query {
-	listarPedido(pagina: Int, cantidad: Int): [Pedido!]!
+	listarPedido(pago: Boolean, pagina: Int, cantidad: Int): [Pedido!]!
 }
 
 type Mutation {
