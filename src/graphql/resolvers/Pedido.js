@@ -30,20 +30,20 @@ async function productos({ id }, args, { prisma }) {
 async function listarPedido(parent, args, { usuario, prisma }) {
 	if (usuario.rol !== 'ADMIN') where.estado = true;
 	return await prisma.pedido.findMany({
-		where: { id: { contains: parseInt(args.id) } },
+		where,
 		skip: (args.pagina - 1) * args.cantidad || undefined,
 		take: args.cantidad,
 	});
 }
 
 //Lista todos lo pedidos no pagados
-async function listarPedidoNoPagado(parent, args, { prisma }) {
-	return await prisma.pedido.findMany({
-		where: { pago: null },
-		skip: (args.pagina - 1) * args.cantidad || undefined,
-		take: args.cantidad,
-	});
-}
+// async function listarPedidoNoPagado(parent, args, { prisma }) {
+// 	return await prisma.pedido.findMany({
+// 		where: { pago: null },
+// 		skip: (args.pagina - 1) * args.cantidad || undefined,
+// 		take: args.cantidad,
+// 	});
+// }
 
 //Registra un pedido, validando que el estado de la mesa sea desocupado
 async function registrarPedido(parent, args, { usuario, prisma }) {
@@ -101,8 +101,7 @@ export const Pedido = {
 };
 
 export const Query = {
-	listarPedido,
-	listarPedidoNoPagado
+	listarPedido
 };
 
 export const Mutation = {
