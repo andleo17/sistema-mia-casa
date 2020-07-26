@@ -31,6 +31,13 @@ async function listarPedido(parent, args, { usuario, prisma }) {
 	const where = {};
 	if (usuario.rol !== 'ADMIN') where.estado = true;
 	if (args.pago == false) where.pago = null;
+	if (args.mesa){
+		const mesita = await prisma.mesa.findMany({
+			where: { numero: parseInt(args.mesa) },
+		});
+
+		where.mesaId = mesita[0].id;
+	};
 	return await prisma.pedido.findMany({
 		where,
 		skip: (args.pagina - 1) * args.cantidad || undefined,

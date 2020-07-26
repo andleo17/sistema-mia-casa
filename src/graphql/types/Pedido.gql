@@ -11,7 +11,7 @@ type Pedido {
 }
 
 type Query {
-	listarPedido(pago: Boolean, pagina: Int, cantidad: Int): [Pedido!]!
+	listarPedido(pago: Boolean, mesa: Int, pagina: Int, cantidad: Int): [Pedido!]!
 }
 
 type Mutation {
