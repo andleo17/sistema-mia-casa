@@ -16,6 +16,9 @@ async function pedido({ id }, args, { prisma }) {
 async function listarPago(parent, args, { usuario, prisma }) {
 	if (usuario.rol !== 'ADMIN') throw new AuthenticationError(NO_ADMIN);
 	return await prisma.pago.findMany({
+		where: {
+			id: parseInt(args.id) || undefined,
+		},
 		skip: (args.pagina - 1) * args.cantidad || undefined,
 		take: args.cantidad,
 	});

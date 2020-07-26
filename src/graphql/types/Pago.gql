@@ -9,7 +9,7 @@ type Pago {
 }
 
 type Query {
-	listarPago(pagina: Int, cantidad: Int): [Pago!]!
+	listarPago(id: ID, pagina: Int, cantidad: Int): [Pago!]!
 }
 
 type Mutation {
