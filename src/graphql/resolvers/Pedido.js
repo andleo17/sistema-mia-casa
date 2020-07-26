@@ -28,6 +28,7 @@ async function productos({ id }, args, { prisma }) {
 
 //Lista todos lo pedidos
 async function listarPedido(parent, args, { usuario, prisma }) {
+	const where = {};
 	if (usuario.rol !== 'ADMIN') where.estado = true;
 	return await prisma.pedido.findMany({
 		where,
