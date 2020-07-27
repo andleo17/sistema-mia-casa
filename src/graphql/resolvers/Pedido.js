@@ -36,7 +36,7 @@ async function listarPedido(parent, args, { usuario, prisma }) {
 			where: { numero: parseInt(args.mesa) },
 		});
 
-		where.mesaId = mesita[0].id;
+		where.mesaId = mesita[0] ?  mesita[0].id : -1;
 	};
 	return await prisma.pedido.findMany({
 		where,
